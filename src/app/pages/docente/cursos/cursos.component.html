@@ -1,0 +1,88 @@
+<div class="pagetitle">
+  <h1>Mis Cursos</h1>
+  <nav>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a routerLink="/dashboard">Home</a></li>
+      <li class="breadcrumb-item active">Mis Cursos</li>
+    </ol>
+  </nav>
+</div>
+
+<div class="col-12">
+  <div class="card recent-sales overflow-auto">
+    <div class="card-body pt-3">
+      <!-- Encabezado de la tabla con el selector de registros y campo de búsqueda -->
+      <div class="d-flex justify-content-between mb-3">
+        <!-- Selector de cantidad de registros -->
+        <div class="d-flex align-items-center">
+          <span class="me-2">Mostrando</span>
+          <select class="form-select" (change)="changeLimit($event)">
+            <option value="10">10</option>
+            <option value="20">25</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+          </select>
+          <span class="ms-2 text-nowrap">registros por página</span>
+        </div>
+
+        <!-- Campo de búsqueda -->
+        <div class="d-flex align-items-center">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Buscar..."
+            (input)="searchTable($event)"
+          />
+        </div>
+      </div>
+
+      @if (isLoading) {
+      <div class="alert alert-info mb-4 text-center" role="alert">
+        <i class="bi bi-hourglass-split me-2"></i>
+        Espere un momento, se están cargando los datos...
+      </div>
+      <app-loading-spinner></app-loading-spinner>
+      } @else if(cursos) {
+      <table class="table table-hover">
+        <thead class="">
+          <tr class="text-center">
+            <th scope="col">ID</th>
+            <th scope="col">NOMBRE</th>
+            <th scope="col">NIVEL</th>
+            <th scope="col">PARALELO</th>
+            <th scope="col">TURNO</th>
+          </tr>
+        </thead>
+        <tbody>
+          @if (cursos.length > 0) { @for (curso of cursos | paginate: {
+          itemsPerPage: limit, currentPage: page }; track $index) {
+          <tr>
+            <th class="text-center" scope="row">{{ curso.id }}</th>
+            <td class="text-center">{{ curso.nombre }}</td>
+            <td class="text-center">{{ curso.nivel }}</td>
+            <td class="text-center">{{ curso.paralelo }}</td>
+            <td class="text-center">{{ curso.turno }}</td>
+          </tr>
+          } } @else {
+          <tr>
+            <td colspan="6" class="text-center">No se encontraron registros</td>
+          </tr>
+          }
+        </tbody>
+      </table>
+      }
+
+      <!-- Paginación -->
+      @if (cursos.length > 0) {
+      <div class="d-flex justify-content-end mt-3">
+        <pagination-controls
+          class="custom-pagination"
+          (pageChange)="page = $event"
+          previousLabel="Anterior"
+          nextLabel="Siguiente"
+        ></pagination-controls>
+      </div>
+      }
+    </div>
+  </div>
+</div>

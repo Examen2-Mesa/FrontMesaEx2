@@ -1,0 +1,222 @@
+<div class="pagetitle">
+  <h1>Consultar Predicciones</h1>
+  <nav>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a routerLink="/dashboard">Home</a></li>
+      <li class="breadcrumb-item active">Consultar Predicciones</li>
+    </ol>
+  </nav>
+</div>
+
+<div class="col-12">
+  <div class="card recent-sales">
+    <div class="card-body pt-3">
+      <form [formGroup]="prediccionForm" (ngSubmit)="onSubmit()">
+        <div class="row px-3 pt-3">
+          <div class="col-md-4">
+            <div class="mb-3">
+              <label for="estudiante_id" class="form-label fw-semibold"
+                >Seleccionar Estudiante:</label
+              >
+              <ng-select
+                [items]="estudiantes"
+                bindLabel="nombreCompleto"
+                bindValue="estudiante.id"
+                [clearable]="true"
+                [searchable]="true"
+                placeholder="Seleccione un estudiante"
+                notFoundText="No se encontraron resultados"
+                formControlName="estudiante_id"
+                class="w-100"
+                (change)="obtenerMateriasPorEstudiante()"
+              >
+              </ng-select>
+
+              <span
+                *ngIf="isValidField('estudiante_id')"
+                class="form-text text-danger"
+              >
+                * {{ getMessageError("estudiante_id") }}
+              </span>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="mb-3">
+              <label for="materia_id" class="form-label fw-semibold"
+                >Seleccionar Materia:</label
+              >
+              <ng-select
+                [items]="materias"
+                bindLabel="nombre"
+                bindValue="id"
+                [clearable]="true"
+                [searchable]="true"
+                placeholder="Seleccione una materia"
+                notFoundText="No se encontraron resultados"
+                formControlName="materia_id"
+                class="w-100"
+              >
+              </ng-select>
+              <span
+                *ngIf="isValidField('materia_id')"
+                class="form-text text-danger"
+              >
+                * {{ getMessageError("materia_id") }}
+              </span>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="mb-3">
+              <label for="gestion_id" class="form-label fw-semibold"
+                >Seleccionar Gestión:</label
+              >
+              <ng-select
+                [items]="gestiones"
+                bindLabel="anio"
+                bindValue="id"
+                [clearable]="true"
+                [searchable]="true"
+                placeholder="Seleccione un periodo"
+                notFoundText="No se encontraron resultados"
+                formControlName="gestion_id"
+                class="w-100"
+              >
+              </ng-select>
+              <span
+                *ngIf="isValidField('gestion_id')"
+                class="form-text text-danger"
+              >
+                * {{ getMessageError("gestion_id") }}
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="row justify-content-start px-3">
+          <div class="col-md-4">
+            <button type="submit" class="btn btn-primary w-100">
+              <i class="bi bi-search"></i> Consultar
+            </button>
+          </div>
+        </div>
+      </form>
+
+      <hr
+        *ngIf="isLoading"
+        id="dividerDatos"
+        class="my-4 mx-3"
+        style="background: rgb(237, 237, 237); height: 1.2px"
+      />
+
+      @if (isLoading) {
+      <div
+        class="alert alert-warning mx-3 d-flex align-items-start"
+        role="alert"
+      >
+        <i class="bi bi-hourglass-split me-2 fs-4"></i>
+        <div>
+          <strong>Predicción en proceso:</strong> estamos generando las
+          calificaciones utilizando un modelo de Machine Learning. Este proceso
+          puede tardar varios minutos dependiendo de la cantidad de datos y la
+          carga del servidor. Por favor, no cierre ni recargue la página hasta
+          que el proceso haya finalizado.
+        </div>
+      </div>
+
+      <app-loading-spinner></app-loading-spinner>
+      } @else if (prediccion && prediccion.data.length > 0) {
+      <div class="mt-4 mx-3">
+        <div class="table-responsive">
+          <table class="table table-hover table-bordered">
+            <thead class="table-primary">
+              <tr>
+                <th>#</th>
+                <th>Periodo</th>
+                <th>Nota Final</th>
+                <th>Asistencia (%)</th>
+                <th>Participación (%)</th>
+                <th>Predicción</th>
+                <th>Clasificación</th>
+                <th>Fecha Generada</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of prediccion.data; let i = index">
+                <td>{{ i + 1 }}</td>
+                <td>{{ obtenerNombrePeriodo(item.periodo_id) }}</td>
+                <td class="text-center">
+                  {{ item.promedio_notas | number : "1.2-2" }}
+                </td>
+                <td class="text-center">
+                  {{ item.porcentaje_asistencia | number : "1.2-2" }}
+                </td>
+                <td class="text-center">
+                  {{ item.promedio_participacion | number : "1.2-2" }}
+                </td>
+                <td class="text-center">
+                  <span class="fw-bold text-primary">
+                    {{ item.resultado_numerico | number : "1.2-2" }}
+                  </span>
+                </td>
+                <td class="text-center">
+                  <span
+                    class="badge"
+                    [ngClass]="{
+                      'bg-critico': item.clasificacion === 'Crítico',
+                      'bg-alto': item.clasificacion === 'Alto',
+                      'bg-medio': item.clasificacion === 'Medio',
+                      'bg-bajo': item.clasificacion === 'Bajo'
+                    }"
+                  >
+                    {{ item.clasificacion }}
+                  </span>
+                </td>
+
+                <td class="text-center">
+                  {{ item.fecha_generada | date : "dd/MM/yyyy - hh:mm a" }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="mt-4 mx-3">
+        <div class="alert alert-info d-flex align-items-start" role="alert">
+          <i class="bi bi-info-circle-fill me-2 fs-5"></i>
+          <div>
+            <strong>Nota:</strong> los resultados mostrados corresponden a
+            predicciones generadas mediante un modelo de Machine Learning, en
+            base al promedio de notas, porcentaje de asistencia y nivel de
+            participación del estudiante durante los periodos académicos.
+            <br />
+            <strong>Clasificación:</strong> indica el nivel de riesgo académico
+            estimado para el estudiante:
+            <ul class="mb-0">
+              <li>
+                <span class="badge bg-critico">Crítico</span>: Riesgo muy alto e
+                inminente de fracaso académico.
+              </li>
+              <li>
+                <span class="badge bg-alto">Alto</span>: Alto riesgo de fracaso
+                académico.
+              </li>
+              <li>
+                <span class="badge bg-medio">Medio</span>: Riesgo moderado de
+                fracaso académico.
+              </li>
+              <li>
+                <span class="badge bg-bajo">Bajo</span>: Bajo riesgo de fracaso
+                académico.
+              </li>
+            </ul>
+            Estos resultados son aproximaciones y pueden ajustarse conforme se
+            disponga de nuevos datos.
+          </div>
+        </div>
+      </div>
+
+      }
+    </div>
+  </div>
+</div>

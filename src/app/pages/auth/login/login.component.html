@@ -1,0 +1,118 @@
+<main>
+  <div class="container">
+    <section
+      class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4"
+    >
+      <div class="container">
+        <div class="row justify-content-center">
+          <div
+            class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center"
+          >
+            <div class="d-flex justify-content-center py-4">
+              <a href="index.html" class="d-flex align-items-center w-auto">
+                <img src="assets/img/logo.png" alt="65" width="65" />
+                <span class="logo-text ms-2"
+                  >IA<span class="logo-ia">cademic</span></span
+                >
+              </a>
+            </div>
+            <!-- End Logo -->
+
+            <div class="card mb-3">
+              <div class="card-body">
+                <div class="pt-4 pb-2">
+                  <h5 class="card-title text-center pb-0 fs-4">
+                    Ingresa con tu cuenta
+                  </h5>
+                  <p class="text-center small">
+                    Ingresa tus datos para iniciar sesión
+                  </p>
+                </div>
+
+                <form
+                  [formGroup]="loginForm"
+                  (ngSubmit)="login()"
+                  class="row g-3 needs-validation"
+                >
+                  <div class="col-12">
+                    <label for="yourUsername" class="form-label">Email</label>
+                    <input
+                      type="email"
+                      formControlName="email"
+                      id="yourUsername"
+                      class="form-control"
+                      [ngClass]="{
+                        'is-invalid': isInvalidField('email'),
+                      }"
+                      required
+                    />
+
+                    <div
+                      *ngIf="isInvalidField('email')"
+                      class="invalid-feedback"
+                    >
+                      {{ getMessageError("email") }}
+                    </div>
+                  </div>
+
+                  <div class="col-12">
+                    <label for="yourPassword" class="form-label"
+                      >Password</label
+                    >
+                    <input
+                      type="password"
+                      class="form-control"
+                      formControlName="password"
+                      id="yourPassword"
+                      [ngClass]="{ 'is-invalid': isInvalidField('password') }"
+                      required
+                    />
+                    <div
+                      *ngIf="isInvalidField('password')"
+                      class="invalid-feedback"
+                    >
+                      {{ getMessageError("password") }}
+                    </div>
+                  </div>
+
+                  <div class="col-12">
+                    <div class="form-check">
+                      <input
+                        class="form-check-input"
+                        type="checkbox"
+                        name="remember"
+                        value="true"
+                        id="rememberMe"
+                      />
+                      <label class="form-check-label" for="rememberMe"
+                        >Recuerdame</label
+                      >
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <button
+                      class="btn btn-primary w-100"
+                      type="submit"
+                      [disabled]="loginForm.invalid || loading"
+                    >
+                      Iniciar sesión
+                    </button>
+                  </div>
+                  <!-- <div class="col-12">
+                    <p class="small mb-0">¿No tienes una cuenta? <a  (click)="register()" style="text-decoration:underline; cursor: pointer; color: blue;">Regístrate</a></p>
+                  </div> -->
+                </form>
+              </div>
+            </div>
+
+            <div class="credits">
+              Desarrollado por
+              <a href="https://bootstrapmade.com/">Malvados y Asociados S.A.</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>
+<!-- End #main -->

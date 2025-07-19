@@ -1,0 +1,169 @@
+<div class="pagetitle">
+  <h1>Asignar Materias a Curso</h1>
+  <nav>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a routerLink="/dashboard">Home</a></li>
+      <li class="breadcrumb-item active">Asignar Materias a Curso</li>
+    </ol>
+  </nav>
+</div>
+
+<div class="col-12">
+  <div class="card verflow-auto">
+    <div class="card-body p-5">
+      <div class="d-flex justify-content-between mb-4">
+        <div class="d-flex align-middle">
+          <i class="bi bi-pencil-square" style="font-size: 25px"></i>
+          <span class="ms-2 text-nowrap fs-4 fw-bold">Detalles del curso</span>
+        </div>
+
+        <!-- Boton para regresar atras -->
+        <div class="d-flex align-items-center">
+          <button class="btn btn-outline-dark" (click)="regresar()">
+            <i class="bi bi-arrow-left"></i>&nbsp; Regresar
+          </button>
+        </div>
+      </div>
+
+      @if (isLoadingCurso) {
+      <div class="alert alert-info mb-4 text-center" role="alert">
+        <i class="bi bi-hourglass-split me-2"></i>
+        Espere un momento, se están cargando los detalles del curso...
+      </div>
+      <app-loading-spinner></app-loading-spinner>
+      } @else if(curso) {
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <label class="fs-5"><strong>Curso:</strong>&nbsp;&nbsp;</label>
+          <span class="fs-5">{{ curso.nombre }}</span>
+        </div>
+
+        <div class="col-md-6">
+          <label class="fs-5"><strong>Nivel:</strong>&nbsp;&nbsp;</label>
+          <span class="fs-5">{{ curso.nivel }}</span>
+        </div>
+
+        <div class="col-md-6">
+          <label class="fs-5"><strong>Paralelo:</strong>&nbsp;&nbsp;</label>
+          <span class="fs-5">{{ curso.paralelo }}</span>
+        </div>
+
+        <div class="col-md-6">
+          <label class="fs-5"><strong>Turno:</strong>&nbsp;&nbsp;</label>
+          <span class="fs-5">{{ curso.turno }}</span>
+        </div>
+      </div>
+      }
+
+      <hr class="my-4" />
+
+      <div class="row">
+        <div class="d-flex justify-content-between">
+          <div class="d-flex align-middle">
+            <i class="bi bi-journal-bookmark-fill" style="font-size: 25px"></i>
+            <span class="ms-2 text-nowrap fs-4 fw-bold"
+              >Materias Asignadas</span
+            >
+          </div>
+
+          <!-- Botón para asignar materia -->
+          @if (!isAsignando) {
+          <div class="d-flex align-items-center">
+            <button class="btn btn-primary" (click)="activarAsignacion()">
+              <i class="bi bi-pencil"></i>&nbsp; Editar
+            </button>
+          </div>
+          } @else {
+          <div class="d-flex align-items-center">
+            <button class="btn btn-danger" (click)="cancelarAsignacion()">
+              <i class="bi bi-x-circle"></i>&nbsp; Cancelar
+            </button>
+          </div>
+          }
+        </div>
+
+        <!-- Select para asignar materia (solo si isAsignando es true) -->
+        <div class="row mt-3" *ngIf="isAsignando">
+          <div class="col-md-6">
+            <ng-select
+              [items]="materias"
+              bindLabel="nombre"
+              bindValue="id"
+              [(ngModel)]="materiaSeleccionada"
+              [searchable]="true"
+              placeholder="Seleccione una materia"
+              notFoundText="No se encontraron resultados"
+              class="w-100"
+            >
+            </ng-select>
+          </div>
+
+          <!-- Botones para guardar o cancelar -->
+          <div class="col-md-6 d-flex align-items-end">
+            <button class="btn btn-success me-2" (click)="asignarMateria()">
+              <i class="bi bi-check-circle"></i> Asignar
+            </button>
+          </div>
+        </div>
+
+        @if (isLoadingMaterias) {
+        <div class="alert alert-info mb-4 text-center" role="alert">
+          <i class="bi bi-hourglass-split me-2"></i>
+          Espere un momento, se están cargando las materias asignadas...
+        </div>
+        <app-loading-spinner></app-loading-spinner>
+        } @else if(materiasAsignadas) {
+        <!-- Tabla -->
+        <div class="table-responsive mt-4">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>Nombre de la Materia</th>
+                <!-- Mostrar columna Acciones solo si se está asignando -->
+                <th *ngIf="isAsignando">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="
+                  let detalle of materiasAsignadas
+                    | paginate : { itemsPerPage: limit, currentPage: page };
+                  let i = index
+                "
+              >
+                <td>{{ detalle.materia.nombre }}</td>
+                <!-- Mostrar botones solo si se está asignando -->
+                <td *ngIf="isAsignando" class="text-center">
+                  <button
+                    class="btn btn-danger btn-sm"
+                    (click)="quitarMateria(detalle)"
+                  >
+                    <i class="bi bi-trash"></i>&nbsp; Quitar
+                  </button>
+                </td>
+              </tr>
+              <tr *ngIf="!materiasAsignadas || materiasAsignadas.length === 0">
+                <td [attr.colspan]="isAsignando ? 2 : 1" class="text-center">
+                  No hay materias asignadas.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- Paginación -->
+          @if (materiasAsignadas.length > limit) {
+          <div class="d-flex justify-content-end mt-3">
+            <pagination-controls
+              class="custom-pagination"
+              (pageChange)="page = $event"
+              previousLabel="Anterior"
+              nextLabel="Siguiente"
+            ></pagination-controls>
+          </div>
+          }
+        </div>
+        }
+      </div>
+    </div>
+  </div>
+</div>

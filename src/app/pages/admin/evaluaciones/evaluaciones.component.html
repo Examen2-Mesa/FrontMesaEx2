@@ -1,0 +1,149 @@
+<div class="pagetitle">
+  <h1>Consultar Calificaciones</h1>
+  <nav>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a routerLink="/dashboard">Home</a></li>
+      <li class="breadcrumb-item active">Consultar Calificaciones</li>
+    </ol>
+  </nav>
+</div>
+
+<div class="col-12">
+  <div class="card recent-sales">
+    <div class="card-body pt-3">
+      <form [formGroup]="evaluacionForm" (ngSubmit)="onSubmit()">
+        <div class="row px-3 pt-3">
+          <div class="col-md-4">
+            <div class="mb-3">
+              <label for="estudiante_id" class="form-label fw-semibold"
+                >Seleccionar Estudiante:</label
+              >
+              <ng-select
+                [items]="estudiantes"
+                bindLabel="nombreCompleto"
+                bindValue="id"
+                [clearable]="true"
+                [searchable]="true"
+                placeholder="Seleccione un estudiante"
+                notFoundText="No se encontraron resultados"
+                formControlName="estudiante_id"
+                class="w-100"
+              >
+              </ng-select>
+
+              <span
+                *ngIf="isValidField('estudiante_id')"
+                class="form-text text-danger"
+              >
+                * {{ getMessageError("estudiante_id") }}
+              </span>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="mb-3">
+              <label for="periodo_id" class="form-label fw-semibold"
+                >Seleccionar Periodo:</label
+              >
+              <ng-select
+                [items]="periodos"
+                bindLabel="nombre"
+                bindValue="id"
+                [clearable]="true"
+                [searchable]="true"
+                placeholder="Seleccione un periodo"
+                notFoundText="No se encontraron resultados"
+                formControlName="periodo_id"
+                class="w-100"
+              >
+              </ng-select>
+              <span
+                *ngIf="isValidField('periodo_id')"
+                class="form-text text-danger"
+              >
+                * {{ getMessageError("periodo_id") }}
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="row justify-content-start px-3">
+          <div class="col-md-4">
+            <button type="submit" class="btn btn-primary w-100">
+              <i class="bi bi-search"></i> Consultar
+            </button>
+          </div>
+          <div class="col-md-4">
+            <button
+              class="btn btn-danger w-100"
+              (click)="generarReportePDF()"
+              type="button"
+            >
+              <i class="bi bi-file-earmark-pdf"></i> Descargar PDF
+            </button>
+          </div>
+          <div class="col-md-4">
+            <button
+              class="btn btn-success w-100"
+              (click)="generarReporteExcel()"
+              type="button"
+            >
+              <i class="bi bi-file-earmark-excel"></i> Descargar Excel
+            </button>
+          </div>
+        </div>
+      </form>
+
+      <hr
+        *ngIf="isLoading"
+        id="dividerDatos"
+        class="my-4 mx-3"
+        style="background: rgb(237, 237, 237); height: 1.2px"
+      />
+
+      @if (isLoading) {
+      <app-loading-spinner></app-loading-spinner>
+      } @else if (calificacionResponse && calificacionResponse.length > 0) {
+      <div class="mt-4">
+        <div class="card">
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-bordered table-striped">
+                <thead class="table-primary">
+                  <tr>
+                    <th>#</th>
+                    <th>Materia</th>
+                    <th>Nota Final</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of calificacionResponse; let i = index">
+                    <td>{{ i + 1 }}</td>
+                    <td>
+                      {{ obtenerNombreMateria(item.materia_id) }}
+                    </td>
+                    <td>
+                      <span
+                        [ngClass]="{
+                          'text-success': item.nota_final >= 51,
+                          'text-danger': item.nota_final < 51
+                        }"
+                      >
+                        {{ item.nota_final | number : "1.2-2" }}
+                      </span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      } @else if (calificacionResponse && calificacionResponse.length === 0) {
+      <div class="alert alert-info mt-4 mx-3 text-center" role="alert">
+        No se encontraron calificaciones para el estudiante y periodo
+        seleccionados.
+      </div>
+      }
+    </div>
+  </div>
+</div>

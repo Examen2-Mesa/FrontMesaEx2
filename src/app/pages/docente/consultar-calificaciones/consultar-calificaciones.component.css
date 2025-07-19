@@ -1,0 +1,97 @@
+.container-promedio {
+  display: flex;
+  align-items: center;
+  border-radius: 20px;
+  padding: 20px;
+  margin: 10px 0;
+  background-color: #f0f0f0;
+  border: 1px solid transparent;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+.content-detalle-promedio {
+  background-color: #f0f0f0;
+  border: 1px solid transparent;
+  transition: background-color 0.3s, border-color 0.3s;
+  color: #fff;
+  font-size: 22px;
+}
+
+.content-promedio {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: bold;
+  margin-right: 20px;
+  transition: background-color 0.3s, box-shadow 0.3s;
+  color: #fff;
+}
+
+/* Tipografía */
+.promedio-text {
+  display: block;
+}
+
+.content-title h5 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.content-title p {
+  margin: 0;
+  font-size: 20px;
+}
+
+/* Estados de colores y box-shadow */
+.container-promedio.bueno {
+  background-color: #f1fcf2;
+  border-color: #28a745;
+}
+
+.container-promedio.bueno .content-promedio,
+.container-detalle.bueno .content-detalle-promedio {
+  background-color: #28a745;
+  box-shadow: 0 0 10px rgba(40, 167, 69, 0.6);
+}
+
+.container-promedio.bueno .content-title p,
+.container-detalle.bueno .content-title {
+  color: #28a745;
+}
+
+.container-promedio.regular {
+  background-color: #ffffea;
+  border-color: #ffc107;
+}
+
+.container-promedio.regular .content-promedio,
+.container-detalle.regular .content-detalle-promedio {
+  background-color: #ffc107;
+  box-shadow: 0 0 10px rgba(255, 193, 7, 0.6);
+}
+
+.container-promedio.regular .content-title p,
+.container-detalle.regular .content-title {
+  color: #ffc107;
+}
+
+.container-promedio.malo {
+  background-color: #fef2f2;
+  border-color: #dc3545;
+}
+
+.container-promedio.malo .content-promedio,
+.container-detalle.malo .content-detalle-promedio {
+  background-color: #dc3545;
+  box-shadow: 0 0 10px rgba(220, 53, 69, 0.6);
+}
+
+.container-promedio.malo .content-title p,
+.container-detalle.malo .content-title {
+  color: #dc3545;
+}

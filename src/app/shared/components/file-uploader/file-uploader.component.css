@@ -1,0 +1,53 @@
+/* File Uploader */
+.dropzone {
+  border: 2px dashed #ccc;
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.upload-icon {
+  font-size: 48px;
+  color: #aaa;
+  margin-bottom: 10px;
+}
+
+.dropzone p {
+  font-size: 18px;
+  margin: 0;
+}
+
+.dropzone small {
+  display: block;
+  font-size: 12px;
+  color: #666;
+}
+
+.uploaded-files {
+  margin-top: 20px;
+}
+
+.uploaded-file {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.preview-image {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  margin-right: 10px;
+}
+
+.remove-button {
+  background: none;
+  border: none;
+  color: red;
+  cursor: pointer;
+  margin-left: auto;
+}

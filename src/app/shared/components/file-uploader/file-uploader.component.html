@@ -1,0 +1,18 @@
+<div class="dropzone" (drop)="onDrop($event)" (click)="openFileInput()" (dragover)="onDragOver($event)">
+  <div class="upload-icon">
+    <i class="bi bi-cloud-upload"></i>
+  </div>
+  <p>Suelte los archivos aquí o haga clic para cargar.</p>
+  <small>(Esta es solo una zona de caída de demostración. Los archivos seleccionados no se cargan realmente).</small>
+</div>
+
+<input type="file" id="fileInput" multiple accept="image/*" (change)="onFileSelected($event)" style="display: none;">
+
+<div *ngIf="selectedFiles.length > 0" class="uploaded-files">
+  <div *ngFor="let file of selectedFiles; let i = index" class="uploaded-file">
+    <img [src]="getPreviewUrl(i)" alt="Preview" class="preview-image">
+    <span>{{ file.name }}</span>&nbsp;&nbsp;
+    <span>{{ formatSize(file.size) }} MB</span>
+    <button type="button" (click)="removeFile(i)" class="remove-button"><i class="bi bi-x-circle-fill"></i></button>
+  </div>
+</div>

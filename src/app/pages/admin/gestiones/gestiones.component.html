@@ -1,0 +1,170 @@
+<div class="pagetitle">
+  <h1>Gestiones</h1>
+  <nav>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a routerLink="/dashboard">Home</a></li>
+      <li class="breadcrumb-item active">Gestiones</li>
+    </ol>
+  </nav>
+</div>
+
+<!-- Botón para agregar nuevo -->
+<div class="d-flex justify-content-start mb-3 mt-4">
+  <button class="btn btn-primary" (click)="abrirModal()">
+    <i class="bi bi-plus-circle"></i>&nbsp;&nbsp; Nueva Gestión
+  </button>
+</div>
+
+<div class="col-12">
+  <div class="card recent-sales overflow-auto">
+    <div class="card-body pt-3">
+      <!-- Encabezado de la tabla con el selector de registros y campo de búsqueda -->
+      <div class="d-flex justify-content-between mb-3">
+        <!-- Selector de cantidad de registros -->
+        <div class="d-flex align-items-center">
+          <span class="me-2">Mostrando</span>
+          <select class="form-select" (change)="changeLimit($event)">
+            <option value="10">10</option>
+            <option value="20">25</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+          </select>
+          <span class="ms-2 text-nowrap">registros por página</span>
+        </div>
+
+        <!-- Campo de búsqueda -->
+        <div class="d-flex align-items-center">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Buscar..."
+            (input)="searchTable($event)"
+          />
+        </div>
+      </div>
+
+      @if (isLoading) {
+      <div class="alert alert-info mb-4 text-center" role="alert">
+        <i class="bi bi-hourglass-split me-2"></i>
+        Espere un momento, se están cargando los datos...
+      </div>
+      <app-loading-spinner></app-loading-spinner>
+      } @else if(gestiones) {
+      <table class="table table-hover">
+        <thead class="">
+          <tr class="text-center">
+            <th scope="col">ID</th>
+            <th scope="col">AÑO</th>
+            <th scope="col">DESCRIPCIÓN</th>
+            <th scope="col">ACCIONES</th>
+          </tr>
+        </thead>
+        <tbody>
+          @if (gestiones.length > 0) { @for (gestion of gestiones | paginate: {
+          itemsPerPage: limit, currentPage: page }; track $index) {
+          <tr>
+            <th class="text-center" scope="row">{{ gestion.id }}</th>
+            <td class="text-center">{{ gestion.anio }}</td>
+            <td class="text-center">{{ gestion.descripcion }}</td>
+            <td class="text-center">
+              <button
+                class="btn btn-sm btn-warning me-1"
+                (click)="editarGestion(gestion)"
+              >
+                <i class="bi bi-pencil"></i>
+              </button>
+              <button
+                class="btn btn-sm btn-danger"
+                (click)="eliminarGestion(gestion)"
+              >
+                <i class="bi bi-trash"></i>
+              </button>
+            </td>
+          </tr>
+          } } @else {
+          <tr>
+            <td colspan="4" class="text-center">No se encontraron registros</td>
+          </tr>
+          }
+        </tbody>
+      </table>
+      }
+
+      <!-- Paginación -->
+      @if (gestiones.length > 0) {
+      <div class="d-flex justify-content-end mt-3">
+        <pagination-controls
+          class="custom-pagination"
+          (pageChange)="page = $event"
+          previousLabel="Anterior"
+          nextLabel="Siguiente"
+        ></pagination-controls>
+      </div>
+      }
+    </div>
+  </div>
+
+  <!-- Modal para agregar nueva gestion -->
+  <div class="modal" [ngStyle]="{ display: modalVisible ? 'block' : 'none' }">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title fw-bold">
+            {{ isEditMode ? "Editar Gestión" : "Crear Nueva Gestión" }}
+          </h5>
+          <button
+            type="button"
+            class="btn-close"
+            (click)="cerrarModal()"
+          ></button>
+        </div>
+        <form [formGroup]="gestionForm" (ngSubmit)="onSubmit()">
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="anio" class="form-label fw-semibold"
+                >Año de la Gestión:</label
+              >
+              <input
+                type="text"
+                formControlName="anio"
+                class="form-control"
+                id="anio"
+              />
+              <span *ngIf="isValidField('anio')" class="form-text text-danger">
+                * {{ getMessageError("anio") }}
+              </span>
+            </div>
+            <div class="mb-3">
+              <label for="descripcion" class="form-label fw-semibold"
+                >Descripción:</label
+              >
+              <textarea
+                formControlName="descripcion"
+                class="form-control"
+                id="descripcion"
+              ></textarea>
+              <span
+                *ngIf="isValidField('descripcion')"
+                class="form-text text-danger"
+              >
+                * {{ getMessageError("descripcion") }}
+              </span>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              (click)="cerrarModal()"
+            >
+              Cancelar
+            </button>
+            <button type="submit" class="btn btn-primary">
+              {{ isEditMode ? "Actualizar" : "Guardar" }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

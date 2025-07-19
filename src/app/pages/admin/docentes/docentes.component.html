@@ -1,0 +1,281 @@
+<div class="pagetitle">
+  <h1>Docentes</h1>
+  <nav>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a routerLink="/dashboard">Home</a></li>
+      <li class="breadcrumb-item active">Docentes</li>
+    </ol>
+  </nav>
+</div>
+
+<!-- Botón para agregar nuevo -->
+<div class="d-flex justify-content-start mb-3 mt-4">
+  <button class="btn btn-primary" (click)="abrirModal()">
+    <i class="bi bi-plus-circle"></i>&nbsp;&nbsp; Nuevo Docente
+  </button>
+</div>
+
+<div class="col-12">
+  <div class="card recent-sales overflow-auto">
+    <div class="card-body pt-3">
+      <!-- Encabezado de la tabla con el selector de registros y campo de búsqueda -->
+      <div class="d-flex justify-content-between mb-3">
+        <!-- Selector de cantidad de registros -->
+        <div class="d-flex align-items-center">
+          <span class="me-2">Mostrando</span>
+          <select class="form-select" (change)="changeLimit($event)">
+            <option value="10">10</option>
+            <option value="20">25</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+          </select>
+          <span class="ms-2 text-nowrap">registros por página</span>
+        </div>
+
+        <!-- Campo de búsqueda -->
+        <div class="d-flex align-items-center">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Buscar..."
+            (input)="searchTable($event)"
+          />
+        </div>
+      </div>
+
+      @if (isLoading) {
+      <div class="alert alert-info mb-4 text-center" role="alert">
+        <i class="bi bi-hourglass-split me-2"></i>
+        Espere un momento, se están cargando los datos...
+      </div>
+      <app-loading-spinner></app-loading-spinner>
+      } @else if(docentes) {
+      <table class="table table-hover">
+        <thead class="">
+          <tr class="text-center">
+            <th scope="col">ID</th>
+            <th scope="col">NOMBRE</th>
+            <th scope="col">APELLIDO</th>
+            <th scope="col">EMAIL</th>
+            <th scope="col">TELEFONO</th>
+            <th scope="col">GENERO</th>
+            <th scope="col">ACCIONES</th>
+          </tr>
+        </thead>
+        <tbody>
+          @if (docentes.length > 0) { @for (docente of docentes | paginate: {
+          itemsPerPage: limit, currentPage: page }; track $index) {
+          <tr>
+            <th class="text-center" scope="row">
+              {{ docente.id }}
+            </th>
+            <td class="text-center">{{ docente.nombre }}</td>
+            <td class="text-center">{{ docente.apellido }}</td>
+            <td class="text-center">{{ docente.correo }}</td>
+            <td class="text-center">{{ docente.telefono }}</td>
+            <td class="text-center">{{ docente.genero }}</td>
+            <td class="text-center">
+              <button
+                title="Asignar Materias"
+                class="btn btn-sm btn-primary me-1"
+                (click)="asignarMaterias(docente)"
+              >
+                <i class="bi bi-journal-bookmark-fill"></i>
+              </button>
+              <button
+                class="btn btn-sm btn-warning me-1"
+                (click)="editarDocente(docente)"
+              >
+                <i class="bi bi-pencil"></i>
+              </button>
+              <button
+                class="btn btn-sm btn-danger"
+                (click)="eliminarDocente(docente)"
+              >
+                <i class="bi bi-trash"></i>
+              </button>
+            </td>
+          </tr>
+          } } @else {
+          <tr>
+            <td colspan="7" class="text-center">No se encontraron registros</td>
+          </tr>
+          }
+        </tbody>
+      </table>
+      }
+
+      <!-- Paginación -->
+      @if (docentes.length > 0) {
+      <div class="d-flex justify-content-end mt-3">
+        <pagination-controls
+          class="custom-pagination"
+          (pageChange)="page = $event"
+          previousLabel="Anterior"
+          nextLabel="Siguiente"
+        ></pagination-controls>
+      </div>
+      }
+    </div>
+  </div>
+
+  <!-- Modal para agregar nueva docente -->
+  <div class="modal" [ngStyle]="{ display: modalVisible ? 'block' : 'none' }">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title fw-bold">
+            {{ isEditMode ? "Editar Docente" : "Crear Nuevo Docente" }}
+          </h5>
+          <button
+            type="button"
+            class="btn-close"
+            (click)="cerrarModal()"
+          ></button>
+        </div>
+        <form [formGroup]="docenteForm" (ngSubmit)="onSubmit()">
+          <div class="modal-body">
+            <!-- Nombre -->
+            <div class="mb-3">
+              <label for="nombre" class="form-label fw-semibold">Nombre:</label>
+              <input
+                type="text"
+                formControlName="nombre"
+                class="form-control"
+                id="nombre"
+              />
+              <span
+                *ngIf="isValidField('nombre')"
+                class="form-text text-danger"
+              >
+                * {{ getMessageError("nombre") }}
+              </span>
+            </div>
+
+            <!-- Apellido -->
+            <div class="mb-3">
+              <label for="apellido" class="form-label fw-semibold"
+                >Apellido:</label
+              >
+              <input
+                type="text"
+                formControlName="apellido"
+                class="form-control"
+                id="apellido"
+              />
+              <span
+                *ngIf="isValidField('apellido')"
+                class="form-text text-danger"
+              >
+                * {{ getMessageError("apellido") }}
+              </span>
+            </div>
+
+            <!-- Telefono -->
+            <div class="mb-3">
+              <label for="telefono" class="form-label fw-semibold"
+                >Teléfono:</label
+              >
+              <input
+                type="text"
+                formControlName="telefono"
+                class="form-control"
+                id="telefono"
+              />
+              <span
+                *ngIf="isValidField('telefono')"
+                class="form-text text-danger"
+              >
+                * {{ getMessageError("telefono") }}
+              </span>
+            </div>
+
+            <!-- Email -->
+            <div class="mb-3">
+              <label for="correo" class="form-label fw-semibold">Email:</label>
+              <input
+                formControlName="correo"
+                class="form-control"
+                id="correo"
+              />
+              <span
+                *ngIf="isValidField('correo')"
+                class="form-text text-danger"
+              >
+                * {{ getMessageError("correo") }}
+              </span>
+            </div>
+
+            <!-- Contraseña -->
+            <div *ngIf="!isEditMode" class="mb-3">
+              <label for="contrasena" class="form-label fw-semibold"
+                >Contraseña:</label
+              >
+              <input
+                type="contrasena"
+                formControlName="contrasena"
+                class="form-control"
+                id="contrasena"
+              />
+              <span
+                *ngIf="isValidField('contrasena')"
+                class="form-text text-danger"
+              >
+                * {{ getMessageError("contrasena") }}
+              </span>
+            </div>
+
+            <!-- Genero -->
+            <div class="mb-3">
+              <div>
+                <label class="form-label fw-semibold d-block">Género:</label>
+                <div class="form-check form-check-inline">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    id="generoMasculino"
+                    formControlName="genero"
+                    value="Masculino"
+                  />
+                  <label class="form-check-label" for="generoMasculino"
+                    >Masculino</label
+                  >
+                </div>
+                <div class="form-check form-check-inline">
+                  <input
+                    class="form-check-input"
+                    type="radio"
+                    id="generoFemenino"
+                    formControlName="genero"
+                    value="Femenino"
+                  />
+                  <label class="form-check-label" for="generoFemenino"
+                    >Femenino</label
+                  >
+                </div>
+              </div>
+              <span
+                *ngIf="isValidField('genero')"
+                class="form-text text-danger"
+              >
+                * {{ getMessageError("genero") }}
+              </span>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              (click)="cerrarModal()"
+            >
+              Cancelar
+            </button>
+            <button type="submit" class="btn btn-primary">
+              {{ isEditMode ? "Actualizar" : "Guardar" }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

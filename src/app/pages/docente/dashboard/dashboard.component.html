@@ -1,0 +1,215 @@
+<div class="pagetitle">
+  <h1>Dashboard</h1>
+  <nav>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+      <li class="breadcrumb-item active">Dashboard</li>
+    </ol>
+  </nav>
+</div>
+
+<section class="section dashboard">
+  <div class="row">
+    <div class="col-lg-12">
+      
+      @if (isLoading) {
+        <div class="card py-5 px-5 text-center">
+          <div class="alert alert-info mb-4" role="alert">
+            <i class="bi bi-hourglass-split me-2"></i>
+            Espere un momento, se están cargando los datos...
+          </div>
+          <app-loading-spinner></app-loading-spinner>
+        </div>
+      } @else if(datos) {
+        <div class="row">
+          <!-- Total de Cursos -->
+          <div class="col-xxl-4 col-md-6" *ngIf="datos">
+            <div class="card info-card sales-card">
+              <div class="card-body">
+                <h5 class="card-title">Cursos</h5>
+                <div class="d-flex align-items-center">
+                  <div
+                    class="card-icon rounded-circle d-flex align-items-center justify-content-center"
+                  >
+                    <i class="bi bi-journal-bookmark-fill"></i>
+                  </div>
+                  <div class="ps-3">
+                    <h6>{{ datos.total_cursos }}</h6>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+  
+          <!-- Total de Estudiantes -->
+          <div class="col-xxl-4 col-md-6" *ngIf="datos">
+            <div class="card info-card sales-card">
+              <div class="card-body">
+                <h5 class="card-title">Estudiantes</h5>
+                <div class="d-flex align-items-center">
+                  <div
+                    class="card-icon rounded-circle d-flex align-items-center justify-content-center"
+                  >
+                    <i class="bi bi-people-fill"></i>
+                  </div>
+                  <div class="ps-3">
+                    <h6>{{ datos.total_estudiantes }}</h6>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+  
+          <!-- Última Evaluación -->
+          <div class="col-xxl-4 col-md-6" *ngIf="datos">
+            <div class="card info-card sales-card">
+              <div class="card-body">
+                <h5 class="card-title">Última Evaluación</h5>
+                <div class="d-flex align-items-center">
+                  <div
+                    class="card-icon rounded-circle d-flex align-items-center justify-content-center"
+                  >
+                    <i class="bi bi-calendar-check-fill"></i>
+                  </div>
+                  <div class="ps-3">
+                    <h6>{{ datos.ultima_evaluacion | date : "mediumDate" }}</h6>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+  
+          <!-- Gestión -->
+          <div class="col-xxl-4 col-md-6" *ngIf="datos">
+            <div class="card info-card sales-card">
+              <div class="card-body">
+                <h5 class="card-title">Gestión</h5>
+                <div class="d-flex align-items-center">
+                  <div
+                    class="card-icon rounded-circle d-flex align-items-center justify-content-center"
+                  >
+                    <i class="bi bi-calendar-range-fill"></i>
+                  </div>
+                  <div class="ps-3">
+                    <h6>{{ datos.gestion }}</h6>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+  
+          <!-- Cantidad de Materias Asignadas -->
+          <div class="col-xxl-4 col-md-6" *ngIf="datos">
+            <div class="card info-card sales-card">
+              <div class="card-body">
+                <h5 class="card-title">Materias Asignadas</h5>
+                <div class="d-flex align-items-center">
+                  <div
+                    class="card-icon rounded-circle d-flex align-items-center justify-content-center"
+                  >
+                    <i class="bi bi-book-half"></i>
+                  </div>
+                  <div class="ps-3">
+                    <h6>{{ datos.materias_asignadas }}</h6>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+  
+          <!-- Evaluaciones por Tipo -->
+          <div class="col-xxl-6 col-md-12" *ngIf="datos">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Evaluaciones por Tipo</h5>
+                <div class="row">
+                  <div
+                    class="col-md-6 mb-2"
+                    *ngFor="let key of objectKeys(datos.evaluaciones_por_tipo)"
+                  >
+                    <div
+                      class="d-flex align-items-center p-2 border rounded shadow-sm"
+                    >
+                      <i
+                        class="bi bi-clipboard-check-fill fs-4 text-primary me-3"
+                      ></i>
+                      <div class="flex-grow-1">
+                        <h6 class="mb-0">{{ key }}</h6>
+                        <span class="badge bg-success">{{
+                          datos.evaluaciones_por_tipo[key]
+                        }}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+  
+          <!-- Top Estudiantes -->
+          <div class="col-xxl-6 col-md-12" *ngIf="datos">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Top Estudiantes</h5>
+                <div *ngFor="let materia of objectKeys(datos.top_estudiantes)">
+                  <h6 class="mt-3 text-primary">
+                    <i class="bi bi-bookmark-star-fill"></i> {{ materia }}
+                  </h6>
+                  <div class="row">
+                    <div
+                      class="col-md-12"
+                      *ngFor="let estudiante of datos.top_estudiantes[materia]"
+                    >
+                      <div
+                        class="d-flex align-items-center p-2 mb-2 border rounded shadow-sm"
+                      >
+                        <i
+                          class="bi bi-person-circle fs-4 text-secondary me-3"
+                        ></i>
+                        <div class="flex-grow-1">
+                          <strong
+                            >{{ estudiante.nombre }}
+                            {{ estudiante.apellido }}</strong
+                          >
+                          <div class="small text-muted">
+                            Nota:
+                            <span class="badge bg-warning text-dark">{{
+                              estudiante.nota
+                            }}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+  
+          <!-- Promedios por Materia -->
+          <div class="col-xxl-6 col-md-12" *ngIf="datos">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Promedios por Materia</h5>
+                <ul class="list-group list-group-flush">
+                  <li
+                    class="list-group-item d-flex justify-content-between align-items-center"
+                    *ngFor="let key of objectKeys(datos.promedios_materias)"
+                  >
+                    <div>
+                      <i class="bi bi-journal-text text-info me-2"></i>
+                      {{ key }}
+                    </div>
+                    <span class="badge bg-info text-dark">{{
+                      datos.promedios_materias[key] | number : "1.0-2"
+                    }}</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</section>
