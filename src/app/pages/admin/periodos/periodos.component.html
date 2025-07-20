@@ -1,35 +1,26 @@
-<div class="pagetitle">
-  <h1>Periodos</h1>
-  <nav>
-    <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a routerLink="/dashboard">Home</a></li>
-      <li class="breadcrumb-item active">Periodos</li>
-    </ol>
-  </nav>
-</div>
-
-<!-- Botón para agregar nuevo -->
-<div class="d-flex justify-content-start mb-3 mt-4">
-  <button class="btn btn-primary" (click)="abrirModal()">
-    <i class="bi bi-plus-circle"></i>&nbsp;&nbsp; Nuevo Periodo
-  </button>
-</div>
-
 <div class="col-12">
   <div class="card recent-sales overflow-auto">
     <div class="card-body pt-3">
+      <div class="pagetitle">
+        <h1>Periodos</h1>
+      </div>
       <!-- Encabezado de la tabla con el selector de registros y campo de búsqueda -->
       <div class="d-flex justify-content-between mb-3">
+        <!-- Botón para agregar nuevo -->
+        <div class="d-flex justify-content-start mb-3 mt-4">
+          <button class="btn btn-dark" (click)="abrirModal()">
+            <i class="bi bi-plus-circle"></i>&nbsp;&nbsp; Nuevo Periodo
+          </button>
+        </div>
         <!-- Selector de cantidad de registros -->
         <div class="d-flex align-items-center">
-          <span class="me-2">Mostrando</span>
+          <span class="me-2">Datos</span>
           <select class="form-select" (change)="changeLimit($event)">
             <option value="10">10</option>
             <option value="20">25</option>
             <option value="50">50</option>
             <option value="100">100</option>
           </select>
-          <span class="ms-2 text-nowrap">registros por página</span>
         </div>
 
         <!-- Campo de búsqueda -->
@@ -78,13 +69,13 @@
             </td>
             <td class="text-center">
               <button
-                class="btn btn-sm btn-warning me-1"
+                 class="btn-icon edit-btn" title="Editar"
                 (click)="editarPeriodo(periodo)"
               >
-                <i class="bi bi-pencil"></i>
+                <i class="bi bi-pencil-square"></i>
               </button>
               <button
-                class="btn btn-sm btn-danger"
+                class="btn-icon delete-btn" title="Eliminar"
                 (click)="eliminarPeriodo(periodo)"
               >
                 <i class="bi bi-trash"></i>
@@ -102,12 +93,12 @@
 
       <!-- Paginación -->
       @if (periodos.length > 0) {
-      <div class="d-flex justify-content-end mt-3">
+      <div class="d-flex justify-content-center mt-3">
         <pagination-controls
           class="custom-pagination"
           (pageChange)="page = $event"
-          previousLabel="Anterior"
-          nextLabel="Siguiente"
+          previousLabel="<"
+          nextLabel=">"
         ></pagination-controls>
       </div>
       }

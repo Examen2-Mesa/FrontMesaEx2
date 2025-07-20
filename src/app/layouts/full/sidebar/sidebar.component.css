@@ -1,34 +1,127 @@
-/* Estilo para el submenú */
-.nav-content {
-  display: none;
-  /* padding-left: 20px; */
+/* Sidebar base */
+#sidebar {
+  background-color: #fff;
+  color: #000000; /* azul oscuro para texto */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  height: 100vh;
+  overflow-y: auto;
+  padding-top: 1rem;
+  border-right: 1px solid #e5e7eb;
 }
 
-.nav-content.show {
-  display: block;
+/* Lista */
+#sidebar-nav {
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
-.has-children > a {
+/* Items del menú */
+.nav-item {
+  margin: 0;
+  border-bottom: 1px solid #e5e7eb; /* línea sutil divisoria */
+}
+
+/* Links principales */
+.sidebar-nav .nav-link {
+  display: flex;
+  align-items: center;
+  padding: 16px 20px;
+  color: inherit;
+  font-weight: 600;
+  font-size: 16px;
+  text-decoration: none;
   cursor: pointer;
-} 
+  user-select: none;
+  transition: background-color 0.25s ease, color 0.3s ease;
+}
 
-/* Resaltar el menú activo */
+/* Contenedor fijo para iconos */
+.sidebar-nav .nav-link i:first-child {
+  flex: 0 0 30px; /* ancho fijo */
+  font-size: 18px;
+  color: #000000; /* gris azulado */
+  display: flex;
+  justify-content: center;
+  margin-right: 16px;
+  transition: color 0.3s ease;
+}
+
+/* Hover y activo */
 .sidebar-nav .nav-link:hover,
 .sidebar-nav .nav-link.active {
-  color: #4154f1;
-  background: #f6f9ff;
+  background-color: #eff6ff; /* azul muy suave */
+  color: #1e40af; /* azul marino */
 }
 
+.sidebar-nav .nav-link:hover i:first-child,
+.sidebar-nav .nav-link.active i:first-child {
+  color: #1e40af;
+}
+
+/* Submenú */
+.nav-content {
+  max-height: 0;
+  overflow: hidden;
+  padding-left: 0;
+  transition: max-height 0.3s ease, padding-left 0.3s ease;
+  margin: 0;
+}
+
+/* Sangría para submenú */
+.nav-content.show {
+  max-height: 300px;
+  padding-left: 46px; /* 30px icon + 16px espacio */
+  margin-top: 0;
+}
+
+/* Links del submenú */
+.sidebar-nav .nav-content a {
+  display: block;
+  padding: 12px 0;
+  color: #64748b; /* gris azulado */
+  font-weight: 500;
+  font-size: 14px;
+  text-decoration: none;
+  border-left: 3px solid transparent;
+  transition: border-color 0.3s ease, color 0.3s ease;
+  border-radius: 0 6px 6px 0;
+}
+
+/* Submenú hover y activo */
 .sidebar-nav .nav-content a:hover,
 .sidebar-nav .nav-content a.active {
-  color: #4154f1;
+  color: #1e40af;
+  font-weight: 600;
+  border-left-color: #1e40af;
 }
 
-/* .chevron-icon {
-  width: 1.25rem; 
-  text-align: center;
-  display: inline-block;
-} */
+/* Chevron icon */
+.has-children > a .bi-chevron-down {
+  margin-left: auto;
+  font-size: 1rem;
+  color: #94a3b8;
+  transition: transform 0.3s ease, color 0.3s ease;
+}
 
+.has-children > a[aria-expanded="true"] .bi-chevron-down {
+  transform: rotate(180deg);
+  color: #1e40af;
+}
 
+/* Cursor para items con hijos */
+.has-children > a {
+  cursor: pointer;
+}
 
+/* Sin margen extra entre items */
+.sidebar-nav .nav-item + .nav-item {
+  margin-top: 0;
+}
+
+/* Foco accesible */
+.sidebar-nav .nav-link:focus,
+.sidebar-nav .nav-content a:focus {
+  outline: none;
+  box-shadow: 0 0 0 1px rgba(30, 64, 175, 0.4);
+}

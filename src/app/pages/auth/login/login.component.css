@@ -1,0 +1,23 @@
+main {
+  background: var(--gradient-background) !important;
+}
+.card-title {
+  color: var(--text-color-4);
+  font-weight: 600;
+  font-size: 1.5rem;
+}
+.card {
+  background: rgba(255, 255, 255, 0.1); /* Transparente */
+  border: 1px solid var(--tertiary-color); /* Borde en azul suave */
+  border-radius: 12px;
+  padding: 2rem;
+  backdrop-filter: blur(10px); /* efecto de vidrio */
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 400px;
+  color: var(--text-color-1);
+}
+.form-label {
+  color: var(--text-color-4) !important;
+  font-weight: 500 !important;
+}
