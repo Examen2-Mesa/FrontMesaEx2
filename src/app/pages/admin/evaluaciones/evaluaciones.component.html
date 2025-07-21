@@ -1,23 +1,14 @@
-<div class="pagetitle">
-  <h1>Consultar Calificaciones</h1>
-  <nav>
-    <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a routerLink="/dashboard">Home</a></li>
-      <li class="breadcrumb-item active">Consultar Calificaciones</li>
-    </ol>
-  </nav>
-</div>
 
 <div class="col-12">
   <div class="card recent-sales">
+    <h1>Consultar Calificaciones</h1>
     <div class="card-body pt-3">
       <form [formGroup]="evaluacionForm" (ngSubmit)="onSubmit()">
         <div class="row px-3 pt-3">
           <div class="col-md-4">
             <div class="mb-3">
               <label for="estudiante_id" class="form-label fw-semibold"
-                >Seleccionar Estudiante:</label
-              >
+                >Seleccionar Estudiante:</label>
               <ng-select
                 [items]="estudiantes"
                 bindLabel="nombreCompleto"
@@ -68,24 +59,22 @@
         </div>
         <div class="row justify-content-start px-3">
           <div class="col-md-4">
-            <button type="submit" class="btn btn-primary w-100">
+            <button type="submit" class="btn btn-outline-primary">
               <i class="bi bi-search"></i> Consultar
             </button>
           </div>
           <div class="col-md-4">
             <button
-              class="btn btn-danger w-100"
+              type="button" class="btn btn-outline-danger"
               (click)="generarReportePDF()"
-              type="button"
             >
               <i class="bi bi-file-earmark-pdf"></i> Descargar PDF
             </button>
           </div>
           <div class="col-md-4">
             <button
-              class="btn btn-success w-100"
+              type="button" class="btn btn-outline-success"
               (click)="generarReporteExcel()"
-              type="button"
             >
               <i class="bi bi-file-earmark-excel"></i> Descargar Excel
             </button>
@@ -107,8 +96,8 @@
         <div class="card">
           <div class="card-body">
             <div class="table-responsive">
-              <table class="table table-bordered table-striped">
-                <thead class="table-primary">
+              <table class="table custom-table">
+                <thead class="table-dark">
                   <tr>
                     <th>#</th>
                     <th>Materia</th>

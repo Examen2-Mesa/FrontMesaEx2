@@ -28,10 +28,6 @@
       </div>
 
       @if (isLoadingDocente) {
-      <div class="alert alert-info mb-4 text-center" role="alert">
-        <i class="bi bi-hourglass-split me-2"></i>
-        Espere un momento, se están cargando los datos del docente...
-      </div>
       <app-loading-spinner></app-loading-spinner>
       } @else if(docente) {
       <div class="row mb-3">

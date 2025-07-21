@@ -8,7 +8,7 @@
       <div class="d-flex justify-content-between mb-3">
         <!-- Botón para agregar nuevo -->
         <div class="d-flex justify-content-start mb-3 mt-4">
-          <button class="btn btn-primary" (click)="abrirModal()">
+          <button class="btn btn-dark" (click)="abrirModal()">
             <i class="bi bi-plus-circle"></i>&nbsp;&nbsp; Nuevo Curso
           </button>
         </div>
@@ -35,10 +35,7 @@
       </div>
 
       @if (isLoading) {
-      <div class="alert alert-info mb-4 text-center" role="alert">
-        <i class="bi bi-hourglass-split me-2"></i>
-        Espere un momento, se están cargando los datos...
-      </div>
+    
       <app-loading-spinner></app-loading-spinner>
       } @else if(cursos) {
       <table class="table table-hover">

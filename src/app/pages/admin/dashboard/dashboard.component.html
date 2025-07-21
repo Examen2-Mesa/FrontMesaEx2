@@ -1,232 +1,41 @@
-<div class="pagetitle">
-  <h1>Dashboard</h1>
-  <nav>
-    <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-      <li class="breadcrumb-item active">Dashboard</li>
-    </ol>
-  </nav>
+<div class="card border-0 shadow-sm rounded-2 px-4 py-2 text-center d-center-block">
+  <div class="pagetitle mb-1">
+    <h1 class="display-4 fw-bold text-primary m-0">
+      <i class="bi bi-bar-chart-fill me-2"></i>
+      Dashboard
+    </h1>
+  </div>
 </div>
+
 
 <section class="section dashboard">
   @if (isLoading) {
-  <div class="card py-5 px-5 text-center">
-    <div class="alert alert-info mb-4" role="alert">
-      <i class="bi bi-hourglass-split me-2"></i>
-      Espere un momento, se están cargando los datos...
-    </div>
-    <app-loading-spinner></app-loading-spinner>
-  </div>
+<div class="card"><app-loading-spinner></app-loading-spinner></div>
   } @else if(datos) {
-  <div class="row" *ngIf="datos">
-    <!-- Total Estudiantes -->
-    <div class="col-xxl-4 col-md-6">
-      <div class="card info-card sales-card">
-        <div class="card-body">
-          <h5 class="card-title">Estudiantes</h5>
-          <div class="d-flex align-items-center">
-            <div
-              class="card-icon rounded-circle d-flex align-items-center justify-content-center bg-primary text-white"
-            >
-              <i class="bi bi-people-fill"></i>
-            </div>
-            <div class="ps-3">
-              <h6>{{ datos.total_estudiantes }}</h6>
-            </div>
+  <div class="row g-5" *ngIf="datos">
+    <ng-container *ngFor="let item of [
+      {title:'Estudiantes', icon:'bi-people-fill', bg:'primary', value: datos.total_estudiantes},
+      {title:'Cursos', icon:'bi-journal-bookmark-fill', bg:'info', value: datos.total_cursos},
+      {title:'Administradores', icon:'bi-shield-lock-fill', bg:'dark', value: datos.total_admins},
+      {title:'Docentes', icon:'bi-person-badge-fill', bg:'success', value: datos.total_docentes},
+      {title:'Materias', icon:'bi-book-half', bg:'warning', value: datos.total_materias},
+      {title:'Gestiones', icon:'bi-calendar-range-fill', bg:'secondary', value: datos.total_gestiones},
+      {title:'Periodos', icon:'bi-calendar-event-fill', bg:'danger', value: datos.total_periodos},
+      {title:'Tipos de Evaluaciones', icon:'bi-list-check', bg:'primary', value: datos.total_tipo_evaluaciones},
+      {title:'Evaluaciones', icon:'bi-file-earmark-text-fill', bg:'info', value: datos.total_evaluaciones},
+      {title:'Inscripciones', icon:'bi-clipboard-check-fill', bg:'success', value: datos.total_inscripciones},
+      {title:'Rendimientos', icon:'bi-graph-up', bg:'warning', value: datos.total_rendimientos}
+    ]">
+      <div class="col-xxl-3 col-xl-4 col-md-6">
+        <div class="card border-0 shadow-sm rounded-5 p-4 text-center hover-card">
+          <div class="icon-circle mx-auto mb-3 bg-{{item.bg}} text-white">
+            <i class="bi {{item.icon}} fs-1"></i>
           </div>
+          <h6 class="fw-light text-secondary mb-1">{{ item.title }}</h6>
+          <h3 class="fw-bold text-primary">{{ item.value }}</h3>
         </div>
       </div>
-    </div>
-
-    <!-- Total Cursos -->
-    <div class="col-xxl-4 col-md-6">
-      <div class="card info-card sales-card">
-        <div class="card-body">
-          <h5 class="card-title">Cursos</h5>
-          <div class="d-flex align-items-center">
-            <div
-              class="card-icon rounded-circle d-flex align-items-center justify-content-center bg-info text-white"
-            >
-              <i class="bi bi-journal-bookmark-fill"></i>
-            </div>
-            <div class="ps-3">
-              <h6>{{ datos.total_cursos }}</h6>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Total Administradores -->
-    <div class="col-xxl-4 col-md-6">
-      <div class="card info-card sales-card">
-        <div class="card-body">
-          <h5 class="card-title">Administradores</h5>
-          <div class="d-flex align-items-center">
-            <div
-              class="card-icon rounded-circle d-flex align-items-center justify-content-center bg-dark text-white"
-            >
-              <i class="bi bi-shield-lock-fill"></i>
-            </div>
-            <div class="ps-3">
-              <h6>{{ datos.total_admins }}</h6>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Total Docentes -->
-    <div class="col-xxl-4 col-md-6">
-      <div class="card info-card sales-card">
-        <div class="card-body">
-          <h5 class="card-title">Docentes</h5>
-          <div class="d-flex align-items-center">
-            <div
-              class="card-icon rounded-circle d-flex align-items-center justify-content-center bg-success text-white"
-            >
-              <i class="bi bi-person-badge-fill"></i>
-            </div>
-            <div class="ps-3">
-              <h6>{{ datos.total_docentes }}</h6>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Total Materias -->
-    <div class="col-xxl-4 col-md-6">
-      <div class="card info-card sales-card">
-        <div class="card-body">
-          <h5 class="card-title">Materias</h5>
-          <div class="d-flex align-items-center">
-            <div
-              class="card-icon rounded-circle d-flex align-items-center justify-content-center bg-warning text-white"
-            >
-              <i class="bi bi-book-half"></i>
-            </div>
-            <div class="ps-3">
-              <h6>{{ datos.total_materias }}</h6>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Total Gestiones -->
-    <div class="col-xxl-4 col-md-6">
-      <div class="card info-card sales-card">
-        <div class="card-body">
-          <h5 class="card-title">Gestiones</h5>
-          <div class="d-flex align-items-center">
-            <div
-              class="card-icon rounded-circle d-flex align-items-center justify-content-center bg-secondary text-white"
-            >
-              <i class="bi bi-calendar-range-fill"></i>
-            </div>
-            <div class="ps-3">
-              <h6>{{ datos.total_gestiones }}</h6>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Total Periodos -->
-    <div class="col-xxl-4 col-md-6">
-      <div class="card info-card sales-card">
-        <div class="card-body">
-          <h5 class="card-title">Periodos</h5>
-          <div class="d-flex align-items-center">
-            <div
-              class="card-icon rounded-circle d-flex align-items-center justify-content-center bg-danger text-white"
-            >
-              <i class="bi bi-calendar-event-fill"></i>
-            </div>
-            <div class="ps-3">
-              <h6>{{ datos.total_periodos }}</h6>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Tipos de Evaluaciones -->
-    <div class="col-xxl-4 col-md-6">
-      <div class="card info-card sales-card">
-        <div class="card-body">
-          <h5 class="card-title">Tipos de Evaluaciones</h5>
-          <div class="d-flex align-items-center">
-            <div
-              class="card-icon rounded-circle d-flex align-items-center justify-content-center bg-primary text-white"
-            >
-              <i class="bi bi-list-check"></i>
-            </div>
-            <div class="ps-3">
-              <h6>{{ datos.total_tipo_evaluaciones }}</h6>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Evaluaciones -->
-    <div class="col-xxl-4 col-md-6">
-      <div class="card info-card sales-card">
-        <div class="card-body">
-          <h5 class="card-title">Evaluaciones</h5>
-          <div class="d-flex align-items-center">
-            <div
-              class="card-icon rounded-circle d-flex align-items-center justify-content-center bg-info text-white"
-            >
-              <i class="bi bi-file-earmark-text-fill"></i>
-            </div>
-            <div class="ps-3">
-              <h6>{{ datos.total_evaluaciones }}</h6>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Inscripciones -->
-    <div class="col-xxl-4 col-md-6">
-      <div class="card info-card sales-card">
-        <div class="card-body">
-          <h5 class="card-title">Inscripciones</h5>
-          <div class="d-flex align-items-center">
-            <div
-              class="card-icon rounded-circle d-flex align-items-center justify-content-center bg-success text-white"
-            >
-              <i class="bi bi-clipboard-check-fill"></i>
-            </div>
-            <div class="ps-3">
-              <h6>{{ datos.total_inscripciones }}</h6>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Rendimientos -->
-    <div class="col-xxl-4 col-md-6">
-      <div class="card info-card sales-card">
-        <div class="card-body">
-          <h5 class="card-title">Rendimientos</h5>
-          <div class="d-flex align-items-center">
-            <div
-              class="card-icon rounded-circle d-flex align-items-center justify-content-center bg-warning text-white"
-            >
-              <i class="bi bi-graph-up"></i>
-            </div>
-            <div class="ps-3">
-              <h6>{{ datos.total_rendimientos }}</h6>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    </ng-container>
   </div>
   }
 </section>

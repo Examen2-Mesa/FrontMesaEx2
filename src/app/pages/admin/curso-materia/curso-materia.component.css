@@ -1,0 +1,74 @@
+.btn-icon {
+  background: transparent;
+  border: none;
+  color: #c91111;
+  font-size: 1.2rem;
+  padding: 6px;
+  margin: 0 4px;
+  transition: transform 0.2s ease, color 0.2s ease;
+  cursor: pointer;
+}
+.delete-btn:hover {
+  color: #ff0019; /* rojo Bootstrap */
+}
+.head {
+  background-color: #0d6efd; /* azul Bootstrap */
+  color: #ffffff; /* texto blanco */
+}
+/* Estilo general de la tabla */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #ffffff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  font-size: 0.95rem;
+}
+
+/* Encabezado */
+.table thead {
+  background: #0a3871; /* azul marino */
+  color: #f60202;
+  text-align: left;
+}
+
+.table thead th {
+  padding: 14px 20px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+/* Filas del cuerpo */
+.table tbody tr {
+  transition: background-color 0.2s ease-in-out;
+}
+
+.table tbody tr:nth-child(odd) {
+  background-color: #f4f8fb;
+}
+
+.table tbody tr:nth-child(even) {
+  background-color: #e7f1ff; /* celeste suave */
+}
+
+.table tbody tr:hover {
+  background-color: #d9eaff;
+}
+
+/* Celdas */
+.table td {
+  padding: 12px 20px;
+  color: #333333;
+}
+
+/* Bordes opcionales */
+.table th,
+.table td {
+  border-bottom: 1px solid #dee2e6;
+}
+
+/* Última fila sin borde inferior */
+.table tbody tr:last-child td {
+  border-bottom: none;
+}

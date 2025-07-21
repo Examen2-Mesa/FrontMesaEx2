@@ -1,0 +1,62 @@
+h1 {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  color: #0a1f44; /* Azul marino profundo */
+  margin-bottom: 20px;
+  
+}
+.text-primary {
+  color: #0a1f44 !important; /* Azul marino profundo */
+}
+
+.text-secondary {
+  color: #7a9bb5 !important; /* Azul suave */
+}
+
+.bg-primary {
+  background-color: #0a1f44 !important;
+}
+
+.bg-secondary {
+  background-color: #a4d4ff !important;
+}
+
+.bg-info {
+  background-color: #0a66c2 !important;
+}
+
+.bg-success {
+  background-color: #3a8a3c !important;
+}
+
+.bg-warning {
+  background-color: #f4b740 !important;
+}
+
+.bg-danger {
+  background-color: #dc3545 !important;
+}
+
+.bg-dark {
+  background-color: #1a1a1a !important;
+}
+
+.card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card.hover-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 25px rgba(10, 31, 68, 0.2);
+  cursor: pointer;
+}
+
+.icon-circle {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 8px rgba(10, 31, 68, 0.25);
+}

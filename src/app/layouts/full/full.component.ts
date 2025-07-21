@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { SidebarComponent } from './sidebar/sidebar.component';
-import { FooterComponent } from './footer/footer.component';
 import { HeaderComponent } from './header/header.component';
 import { RouterOutlet } from '@angular/router';
 import { Usuario } from '../../pages/auth/interfaces/usuario.interface';
@@ -12,7 +11,6 @@ import { SidebarDocenteComponent } from './sidebar-docente/sidebar-docente.compo
   imports: [
     RouterOutlet,
     HeaderComponent,
-    FooterComponent,
     SidebarComponent,
     SidebarDocenteComponent,
   ],
