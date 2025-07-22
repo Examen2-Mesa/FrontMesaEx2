@@ -1,28 +1,18 @@
-<div class="pagetitle">
-  <h1>Detalle Estudiante</h1>
-  <nav>
-    <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a routerLink="/dashboard">Home</a></li>
-      <li class="breadcrumb-item active">Detalle Estudiante</li>
-    </ol>
-  </nav>
-</div>
+
 
 <div class="col-12">
   <div class="card verflow-auto">
     <div class="card-body p-5">
       <div class="d-flex justify-content-between mb-3">
         <div class="d-flex align-middle">
-          <i class="bi bi-pencil-square" style="font-size: 25px"></i>
           <span class="ms-2 text-nowrap fs-4 fw-bold"
-            >Detalles del Estudiante</span
-          >
+            >Detalles del Estudiante</span>
         </div>
 
         <!-- Boton para regresar atras -->
         <div class="d-flex align-items-center">
           <button class="btn btn-outline-dark" (click)="regresar()">
-            <i class="bi bi-arrow-left"></i>&nbsp; Regresar
+            <i class="bi bi-arrow-left"></i>&nbsp; Volver
           </button>
         </div>
       </div>
@@ -30,82 +20,58 @@
       <hr class="mt-2 mb-4" />
 
       @if (isLoadingEstudiante) {
-      <div class="alert alert-info mb-4 text-center" role="alert">
-        <i class="bi bi-hourglass-split me-2"></i>
-        Espere un momento, se están cargando los datos del estudiante...
-      </div>
       <app-loading-spinner></app-loading-spinner>
       } @else if(estudiante) {
-      <div class="row">
-        <!-- Foto del estudiante -->
-        <div
-          class="col-md-3 d-flex justify-content-center align-items-start mb-4"
-        >
-          <img
-            [src]="estudiante.url_imagen || getImageDefault()"
-            alt="Foto del estudiante"
-            class="img-fluid rounded-3 shadow-sm"
-            style="height: 200px; max-width: 200px"
-          />
-        </div>
+     <div class="student-profile d-flex flex-wrap shadow-lg rounded overflow-hidden">
+  <!-- Foto del estudiante -->
+  <div class="photo-section d-flex justify-content-center align-items-center p-4 bg-light text-white flex-grow-0">
+    <img
+      [src]="estudiante.url_imagen || getImageDefault()"
+      alt="Foto del estudiante"
+      class="rounded-circle shadow"
+      style="width: 180px; height: 180px; object-fit: cover"
+    />
+  </div>
 
-        <!-- Información personal del estudiante -->
-        <div class="col-md-5 mb-4">
-          <h5 class="fw-bold mb-3">
-            <i class="bi bi-person-circle me-2"></i>
-            Información Personal
-          </h5>
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item">
-              <strong>Nombre:</strong> {{ estudiante.nombre }}
-            </li>
-            <li class="list-group-item">
-              <strong>Apellido:</strong> {{ estudiante.apellido }}
-            </li>
-            <li class="list-group-item">
-              <strong>Fecha de Nacimiento:</strong>
-              {{ estudiante.fecha_nacimiento | date : "dd/MM/yyyy" }}
-            </li>
-            <li class="list-group-item">
-              <strong>Edad:</strong>
-              {{
-                estudiante.fecha_nacimiento
-                  ? calcularEdad(estudiante!.fecha_nacimiento)
-                  : "N/A"
-              }}
-              años
-            </li>
-            <li class="list-group-item">
-              <strong>Genero:</strong> {{ estudiante.genero }}
-            </li>
-            <li class="list-group-item">
-              <strong>Dirección:</strong> {{ estudiante.direccion_casa }}
-            </li>
-          </ul>
-        </div>
+  <!-- Información del estudiante y tutor -->
+  <div class="info-section p-4 bg-white flex-grow-1">
+    <div class="info-block mb-4">
+      <h5 class="section-title text-primary">
+        <i class="bi bi-person-circle me-2"></i> Información Personal
+      </h5>
+      <ul class="list-unstyled mb-0">
+        <li><strong>Nombre:</strong> {{ estudiante.nombre }}</li>
+        <li><strong>Apellido:</strong> {{ estudiante.apellido }}</li>
+        <li><strong>Fecha de Nacimiento:</strong> {{ estudiante.fecha_nacimiento | date : "dd/MM/yyyy" }}</li>
+        <li>
+          <strong>Edad:</strong>
+          {{
+            estudiante.fecha_nacimiento
+              ? calcularEdad(estudiante!.fecha_nacimiento)
+              : "N/A"
+          }} años
+        </li>
+        <li><strong>Género:</strong> {{ estudiante.genero }}</li>
+        <li><strong>Dirección:</strong> {{ estudiante.direccion_casa }}</li>
+      </ul>
+    </div>
 
-        <!-- Información del tutor -->
-        <div class="col-md-4 mb-4">
-          <h5 class="fw-bold mb-3">
-            <i class="bi bi-person-badge me-2"></i>
-            Información del Tutor
-          </h5>
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item">
-              <strong>Nombre:</strong> {{ estudiante.nombre_tutor }}
-            </li>
-            <li class="list-group-item">
-              <strong>Telefono:</strong> {{ estudiante.telefono_tutor }}
-            </li>
-          </ul>
-        </div>
-      </div>
-      } 
+    <div class="info-block">
+      <h5 class="section-title text-success">
+        <i class="bi bi-person-badge me-2"></i> Información del Tutor
+      </h5>
+      <ul class="list-unstyled mb-0">
+        <li><strong>Nombre:</strong> {{ estudiante.nombre_tutor }}</li>
+        <li><strong>Teléfono:</strong> {{ estudiante.telefono_tutor }}</li>
+      </ul>
+    </div>
+  </div>
+</div>
+      }
       
       @if (verificarExisteMateriaId()) {
-        <div class="mb-2">
+        <div class="mb-4 mt-5">
           <div class="d-flex align-middle">
-            <i class="bi bi-graph-up" style="font-size: 25px"></i>
             <span class="ms-2 text-nowrap fs-4 fw-bold"
               >Rendimiento Académico</span
             >
@@ -115,19 +81,14 @@
         <hr class="mt-2 mb-4" />
       
         @if (isLoadingDetalle) {
-        <div class="alert alert-info mb-4 text-center" role="alert">
-          <i class="bi bi-hourglass-split me-2"></i>
-          Espere un momento, se están cargando los datos del rendimiento
-          académico...
-        </div>
         <app-loading-spinner></app-loading-spinner>
         } @else if(tarjetas && tarjetas.length > 0) {
         <!-- Tarjetas de Rendimiento Académico -->
         <div class="row g-4">
           <!-- Tarjeta Promedio General -->
-          <div class="col-md-6 col-lg-4">
+          <div class="info-section p-1  flex-grow-1">
             <div
-              class="card h-100 shadow-sm border-0"
+              class="info-block shadow-sm"
               style="
                 background: linear-gradient(135deg, #fff8e1 0%, #fffbf0 100%);
               "
@@ -141,8 +102,8 @@
                       height: 80px;
                       background: linear-gradient(
                         135deg,
-                        #ffa726 0%,
-                        #ff9800 100%
+                        #5a71a7 20%,
+                        #232346 95%
                       );
                       color: white;
                       font-weight: bold;
@@ -152,7 +113,7 @@
                     {{ promedioGeneral.toFixed(1) }}
                   </div>
                   <div>
-                    <h5 class="card-title mb-1 fw-bold">Promedio General</h5>
+                    <h3 class=" mb-1 fw-bold">Promedio General</h3>
                     <span
                       class="badge"
                       [ngClass]="{
@@ -168,207 +129,171 @@
                     </span>
                   </div>
                 </div>
-                <small class="text-muted">
-                  <i class="bi bi-bar-chart me-1"></i>
-                  {{ tarjetas.length }} tipos de evaluación
-                </small>
               </div>
             </div>
           </div>
 
-          <!-- Tarjeta Asistencia (mantener estructura original si no viene en los datos) -->
-          <div class="col-md-6 col-lg-4" *ngIf="resumenAsistencia">
-            <div
-              class="card h-100 shadow-sm border-0"
-              style="
-                background: linear-gradient(135deg, #fff8e1 0%, #fffbf0 100%);
-              "
+          <!-- Tarjeta Asistencia (vertical) -->
+<div class="row g-0">
+  <div class="col-12" *ngIf="resumenAsistencia">
+    <div
+      class="card shadow-sm border-0 mb-5"
+      style="background: linear-gradient(135deg, #fefefe 0%, #ffffff 100%)"
+    >
+      <div class="card-body p-1">
+        <div class="d-flex align-items-center mb-3">
+          <div
+            class="rounded-circle d-flex align-items-center justify-content-center me-3"
+            style="
+              width: 80px;
+              height: 80px;
+              background: linear-gradient(135deg, #ffa726 0%, #ff9800 100%);
+              color: white;
+              font-weight: bold;
+              font-size: 18px;
+            "
+          >
+            {{ resumenAsistencia.porcentaje || 0 }}%
+          </div>
+          <div>
+            <h5 class="card-title mb-1 fw-bold">Asistencia</h5>
+            <span
+              class="badge"
+              [ngClass]="{
+                'bg-success': (resumenAsistencia.porcentaje || 0) >= 85,
+                'bg-warning text-dark': (resumenAsistencia.porcentaje || 0) >= 70,
+                'bg-danger': (resumenAsistencia.porcentaje || 0) < 70
+              }"
             >
-              <div class="card-body p-4">
-                <div class="d-flex align-items-center mb-3">
-                  <div
-                    class="rounded-circle d-flex align-items-center justify-content-center me-3"
-                    style="
-                      width: 80px;
-                      height: 80px;
-                      background: linear-gradient(
-                        135deg,
-                        #ffa726 0%,
-                        #ff9800 100%
-                      );
-                      color: white;
-                      font-weight: bold;
-                      font-size: 18px;
-                    "
-                  >
-                    {{ resumenAsistencia.porcentaje || 0 }}%
-                  </div>
-                  <div>
-                    <h5 class="card-title mb-1 fw-bold">Asistencia</h5>
-                    <span
-                      class="badge"
-                      [ngClass]="{
-                        'bg-success': (resumenAsistencia.porcentaje || 0) >= 85,
-                        'bg-warning text-dark':
-                          (resumenAsistencia.porcentaje || 0) >= 70,
-                        'bg-danger': (resumenAsistencia.porcentaje || 0) < 70
-                      }"
-                    >
-                      {{ obtenerCategoria(resumenAsistencia.porcentaje || 0) }}
-                    </span>
-                  </div>
-                </div>
-
-                <!-- Barra de progreso -->
-                <div
-                  class="progress mb-3"
-                  style="height: 8px; background: #e0e0e0"
-                >
-                  <div
-                    class="progress-bar"
-                    role="progressbar"
-                    [style.width.%]="resumenAsistencia.porcentaje || 0"
-                    style="
-                      background: linear-gradient(
-                        90deg,
-                        #ffa726 0%,
-                        #ff9800 100%
-                      );
-                    "
-                    [attr.aria-valuenow]="resumenAsistencia.porcentaje || 0"
-                    aria-valuemin="0"
-                    aria-valuemax="100"
-                  ></div>
-                </div>
-
-                <small class="text-muted mb-3 d-block">
-                  <i class="bi bi-calendar-check me-1"></i>
-                  {{ resumenAsistencia.detalle.length }} registros
-                </small>
-
-                <!-- Registros recientes -->
-                <div *ngIf="resumenAsistencia.detalle.length > 0">
-                  <h6 class="fw-bold mb-2" style="font-size: 14px">
-                    Registros Recientes:
-                  </h6>
-                  <div
-                    *ngFor="let detalle of resumenAsistencia.detalle.slice(0, 3)"
-                    class="d-flex justify-content-between align-items-center mb-1"
-                  >
-                    <div class="d-flex align-items-center">
-                      <span
-                        class="rounded-circle me-2"
-                        style="width: 8px; height: 8px"
-                        [style.background]="obtenerColorPunto(detalle.valor)"
-                      ></span>
-                      <small>{{ detalle.descripcion }}</small>
-                    </div>
-                    <small class="text-muted">{{
-                      formatearFecha(detalle.fecha)
-                    }}</small>
-                  </div>
-                </div>
-              </div>
-            </div>
+              {{ obtenerCategoria(resumenAsistencia.porcentaje || 0) }}
+            </span>
           </div>
         </div>
 
-        <!-- Sección Detalle por Tipo de Evaluación -->
-        <div class="mt-5">
-          <div class="mb-4">
+        <div class="progress mb-3" style="height: 8px; background: #e0e0e0">
+          <div
+            class="progress-bar"
+            role="progressbar"
+            [style.width.%]="resumenAsistencia.porcentaje || 0"
+            style="background: linear-gradient(90deg, #ffa726 0%, #ff9800 100%)"
+            [attr.aria-valuenow]="resumenAsistencia.porcentaje || 0"
+            aria-valuemin="0"
+            aria-valuemax="100"
+          ></div>
+        </div>
+
+        <small class="text-muted d-block mb-3">
+          <i class="bi bi-calendar-check me-1"></i>
+          {{ resumenAsistencia.detalle.length }} registros
+        </small>
+
+        <div *ngIf="resumenAsistencia.detalle.length > 0">
+          <h6 class="fw-bold mb-2" style="font-size: 14px">Registros Recientes:</h6>
+          <div
+            *ngFor="let detalle of resumenAsistencia.detalle.slice(0, 3)"
+            class="d-flex justify-content-between align-items-center mb-1"
+          >
             <div class="d-flex align-items-center">
-              <i class="bi bi-clipboard-data" style="font-size: 25px"></i>
-              <span class="ms-2 text-nowrap fs-4 fw-bold"
-                >Detalle por Tipo de Evaluación</span
+              <span
+                class="rounded-circle me-2"
+                style="width: 8px; height: 8px"
+                [style.background]="obtenerColorPunto(detalle.valor)"
+              ></span>
+              <small>{{ detalle.descripcion }}</small>
+            </div>
+            <small class="text-muted">{{ formatearFecha(detalle.fecha) }}</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Detalle por Tipo de Evaluación - en lista vertical -->
+<div class="mt-5">
+  <div class="mb-4">
+    <div class="d-flex align-items-center">
+      <span class="ms-2 fs-4 fw-bold">Historial de Notas</span>
+    </div>
+  </div>
+
+  <hr class="mt-2 mb-4" />
+
+  <div class="row g-0">
+    <div
+      class="col-12 mb-4"
+      *ngFor="let tarjeta of tarjetas; trackBy: trackByTarjeta"
+    >
+      <div
+        class="card shadow-sm border-0 "
+        [style.background]="obtenerConfiguracion(tarjeta.nombre).fondo"
+      >
+        <div class="card-body p-2">
+          <div class="d-flex align-items-center mb-3">
+            <div
+              class="rounded-pill px-3 py-2 me-3 fw-bold text-white"
+              [style.background]="tarjeta.gradiente"
+              style="font-size: 16px"
+            >
+              {{ tarjeta.promedio.toFixed(1) }}
+            </div>
+            <div>
+              <h5 class="card-title mb-1 fw-bold">{{ tarjeta.nombre }}</h5>
+              <small
+                class="fw-semibold"
+                [ngClass]="{
+                  'text-success': tarjeta.categoria === 'Excelente',
+                  'text-warning': tarjeta.categoria === 'Bueno',
+                  'text-secondary': tarjeta.categoria === 'Regular',
+                  'text-danger': tarjeta.categoria === 'Necesita Mejorar'
+                }"
               >
+                {{ tarjeta.evaluaciones }} evaluación(es) • {{ tarjeta.categoria }}
+              </small>
             </div>
           </div>
 
-          <hr class="mt-2 mb-4" />
+          <div *ngIf="tarjeta.detalles.length > 0">
+            <h6 class="fw-bold mb-3" style="color: #666; font-size: 14px">
+              Evaluaciones:
+            </h6>
 
-          <div class="row g-4">
-            <!-- Tarjeta dinámica para cada tipo de evaluación -->
             <div
-              class="col-md-6 col-lg-4"
-              *ngFor="let tarjeta of tarjetas; trackBy: trackByTarjeta"
+              *ngFor="let detalle of tarjeta.detalles"
+              class="d-flex justify-content-between align-items-center mb-2 py-1"
             >
-              <div
-                class="card h-100 shadow-sm border-0"
-                [style.background]="obtenerConfiguracion(tarjeta.nombre).fondo"
-              >
-                <div class="card-body p-4">
-                  <!-- Header con promedio y título -->
-                  <div class="d-flex align-items-center mb-3">
-                    <div
-                      class="rounded-pill px-3 py-2 me-3 fw-bold text-white"
-                      [style.background]="tarjeta.gradiente"
-                      style="font-size: 16px"
-                    >
-                      {{ tarjeta.promedio.toFixed(1) }}
-                    </div>
-                    <div>
-                      <h5 class="card-title mb-1 fw-bold">
-                        {{ tarjeta.nombre }}
-                      </h5>
-                      <small
-                        class="fw-semibold"
-                        [ngClass]="{
-                          'text-success': tarjeta.categoria === 'Excelente',
-                          'text-warning': tarjeta.categoria === 'Bueno',
-                          'text-secondary': tarjeta.categoria === 'Regular',
-                          'text-danger': tarjeta.categoria === 'Necesita Mejorar'
-                        }"
-                      >
-                        {{ tarjeta.evaluaciones }} evaluación(es) •
-                        {{ tarjeta.categoria }}
-                      </small>
-                    </div>
-                  </div>
-
-                  <!-- Lista de evaluaciones -->
-                  <div *ngIf="tarjeta.detalles.length > 0">
-                    <h6 class="fw-bold mb-3" style="color: #666; font-size: 14px">
-                      Evaluaciones:
-                    </h6>
-
-                    <div
-                      *ngFor="let detalle of tarjeta.detalles"
-                      class="d-flex justify-content-between align-items-center mb-2 py-1"
-                    >
-                      <div class="d-flex align-items-center">
-                        <span
-                          class="rounded-circle me-2"
-                          style="width: 8px; height: 8px"
-                          [style.background]="detalle.colorPunto"
-                        ></span>
-                        <span style="font-size: 14px">{{
-                          detalle.descripcion
-                        }}</span>
-                      </div>
-                      <div class="d-flex align-items-center">
-                        <span
-                          class="fw-bold me-2"
-                          [style.color]="obtenerColorTexto(detalle.valor)"
-                          style="font-size: 14px"
-                        >
-                          {{ detalle.valor.toFixed(1) }}
-                        </span>
-                        <small class="text-muted">{{ detalle.fecha }}</small>
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- Mensaje cuando no hay evaluaciones -->
-                  <div
-                    *ngIf="tarjeta.detalles.length === 0"
-                    class="text-muted text-center"
-                  >
-                    <small>No hay evaluaciones registradas</small>
-                  </div>
-                </div>
+              <div class="d-flex align-items-center">
+                <span
+                  class="rounded-circle me-2"
+                  style="width: 8px; height: 8px"
+                  [style.background]="detalle.colorPunto"
+                ></span>
+                <span style="font-size: 14px">{{ detalle.descripcion }}</span>
+              </div>
+              <div class="d-flex align-items-center">
+                <span
+                  class="fw-bold me-2"
+                  [style.color]="obtenerColorTexto(detalle.valor)"
+                  style="font-size: 14px"
+                >
+                  {{ detalle.valor.toFixed(1) }}
+                </span>
+                <small class="text-muted">{{ detalle.fecha }}</small>
               </div>
             </div>
           </div>
+
+          <div
+            *ngIf="tarjeta.detalles.length === 0"
+            class="text-muted text-center"
+          >
+            <small>No hay evaluaciones registradas</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
         </div>
         } 
       }

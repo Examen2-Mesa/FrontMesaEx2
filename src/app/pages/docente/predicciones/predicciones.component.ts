@@ -48,6 +48,8 @@ export class PrediccionesComponent {
 
   isLoading: boolean = false;
 
+  modalAbierto: boolean = false;
+
   constructor(
     private authServise: AuthService,
     private estudiantesService: ListaEstudiantesService,
@@ -152,6 +154,14 @@ export class PrediccionesComponent {
       });
   }
 
+  abrirModal(): void {
+      this.modalAbierto = true;
+    }
+
+  cerrarModal(): void {
+    this.modalAbierto = false;
+  }
+  
   obtenerMateriasPorEstudiante(): any {
     const id = this.prediccionForm.get('estudiante_id')?.value;
 

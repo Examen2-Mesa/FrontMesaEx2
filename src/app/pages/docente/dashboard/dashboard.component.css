@@ -1,0 +1,69 @@
+/* Estilo general para .info-card */
+.card.info-card {
+  border-radius: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border: none;
+  background-color: #ffffff;
+}
+
+/* Títulos dentro de las tarjetas */
+.card-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #0d6efd;
+}
+
+/* Número o cantidad principal dentro de la tarjeta */
+.card-body h6 {
+  font-size: 1.4rem;
+  font-weight: bold;
+  margin: 0;
+}
+
+/* Texto debajo del número principal */
+.card-body span.text-muted {
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+/* Ícono redondo a la izquierda */
+.card-icon {
+  width: 48px;
+  height: 48px;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+}
+
+/* Botón de collapsible tipo acordeón */
+.btn-outline-dark,
+.btn-outline-primary {
+  font-size: 0.9rem;
+  padding: 0.4rem 0.8rem;
+  border-radius: 0.5rem;
+}
+
+/* Listado de alumnos y promedios */
+.list-group-item {
+  background-color: transparent;
+  border: none;
+  font-size: 0.95rem;
+}
+
+/* Badge con nota */
+.badge {
+  font-size: 0.75rem;
+  padding: 0.4em 0.6em;
+  border-radius: 0.5rem;
+}
+
+/* Alertas dentro de tarjetas (carga, error) */
+.card .alert {
+  font-size: 0.9rem;
+  margin: 0.5rem;
+}
+ .badge {
+  background-color: #8e28a7;
+ }

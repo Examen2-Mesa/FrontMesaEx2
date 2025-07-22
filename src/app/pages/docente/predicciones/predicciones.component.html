@@ -1,16 +1,9 @@
-<div class="pagetitle">
-  <h1>Consultar Predicciones</h1>
-  <nav>
-    <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a routerLink="/dashboard">Home</a></li>
-      <li class="breadcrumb-item active">Consultar Predicciones</li>
-    </ol>
-  </nav>
-</div>
-
 <div class="col-12">
   <div class="card recent-sales">
     <div class="card-body pt-3">
+            <div class="pagetitle">
+              <h1>Consultar Predicciones</h1>
+            </div>
       <form [formGroup]="prediccionForm" (ngSubmit)="onSubmit()">
         <div class="row px-3 pt-3">
           <div class="col-md-4">
@@ -94,7 +87,7 @@
         </div>
         <div class="row justify-content-start px-3">
           <div class="col-md-4">
-            <button type="submit" class="btn btn-primary w-100">
+            <button type="submit" class="btn btn-outline-primary">
               <i class="bi bi-search"></i> Consultar
             </button>
           </div>
@@ -109,26 +102,44 @@
       />
 
       @if (isLoading) {
-      <div
-        class="alert alert-warning mx-3 d-flex align-items-start"
-        role="alert"
-      >
-        <i class="bi bi-hourglass-split me-2 fs-4"></i>
-        <div>
-          <strong>Predicción en proceso:</strong> estamos generando las
-          calificaciones utilizando un modelo de Machine Learning. Este proceso
-          puede tardar varios minutos dependiendo de la cantidad de datos y la
-          carga del servidor. Por favor, no cierre ni recargue la página hasta
-          que el proceso haya finalizado.
-        </div>
-      </div>
+      
 
-      <app-loading-spinner></app-loading-spinner>
+      <app-loading-spinner>Los datos pueden tardar por la cantidad de datos procesados...</app-loading-spinner>
       } @else if (prediccion && prediccion.data.length > 0) {
       <div class="mt-4 mx-3">
+    <!-- Botón de información 
+      <div class="mt-4 mx-3 m-2">
+        <button type="button" class="btn btn-outline-secondary d-flex align-items-center" (click)="abrirModal()">
+          <i class="bi bi-info-circle me-2"></i>
+        </button>
+      </div>
+-->
+<!-- Modal personalizado 
+<div class="modal-overlay" *ngIf="modalAbierto" (click)="cerrarModal()">
+  <div class="modal-contenido" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>Información </h2>
+      <button class="btn-cerrar" (click)="cerrarModal()">×</button>
+    </div>
+    <div class="modal-body">
+      <p>
+        <strong>Nota:</strong> los resultados mostrados corresponden a predicciones generadas mediante un modelo de Machine Learning...
+      </p>
+      <ul>
+        <li><span class="badge bg-critico">Crítico</span>: Riesgo muy alto e inminente de fracaso académico.</li>
+        <li><span class="badge bg-alto">Alto</span>: Alto riesgo de fracaso académico.</li>
+        <li><span class="badge bg-medio">Medio</span>: Riesgo moderado de fracaso académico.</li>
+        <li><span class="badge bg-bajo">Bajo</span>: Bajo riesgo de fracaso académico.</li>
+      </ul>
+      <p class="mb-0">Estos resultados son aproximaciones y pueden ajustarse conforme se disponga de nuevos datos.</p>
+    </div>
+  </div>
+</div>
+-->  
+
         <div class="table-responsive">
           <table class="table table-hover table-bordered">
-            <thead class="table-primary">
+            <thead class="table-dark">
               <tr>
                 <th>#</th>
                 <th>Periodo</th>
@@ -178,41 +189,6 @@
               </tr>
             </tbody>
           </table>
-        </div>
-      </div>
-
-      <div class="mt-4 mx-3">
-        <div class="alert alert-info d-flex align-items-start" role="alert">
-          <i class="bi bi-info-circle-fill me-2 fs-5"></i>
-          <div>
-            <strong>Nota:</strong> los resultados mostrados corresponden a
-            predicciones generadas mediante un modelo de Machine Learning, en
-            base al promedio de notas, porcentaje de asistencia y nivel de
-            participación del estudiante durante los periodos académicos.
-            <br />
-            <strong>Clasificación:</strong> indica el nivel de riesgo académico
-            estimado para el estudiante:
-            <ul class="mb-0">
-              <li>
-                <span class="badge bg-critico">Crítico</span>: Riesgo muy alto e
-                inminente de fracaso académico.
-              </li>
-              <li>
-                <span class="badge bg-alto">Alto</span>: Alto riesgo de fracaso
-                académico.
-              </li>
-              <li>
-                <span class="badge bg-medio">Medio</span>: Riesgo moderado de
-                fracaso académico.
-              </li>
-              <li>
-                <span class="badge bg-bajo">Bajo</span>: Bajo riesgo de fracaso
-                académico.
-              </li>
-            </ul>
-            Estos resultados son aproximaciones y pueden ajustarse conforme se
-            disponga de nuevos datos.
-          </div>
         </div>
       </div>
 

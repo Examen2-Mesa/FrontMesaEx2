@@ -1,0 +1,29 @@
+.student-photo img {
+  object-fit: cover;
+  object-position: center;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}
+
+.student-photo img:hover {
+  transform: scale(1.1);
+}
+
+@media (max-width: 767.98px) {
+  .student-photo {
+    margin-bottom: 1rem;
+  }
+}
+.info-section {
+  background: rgba(51, 56, 73, 0.8);
+  border-radius: 16px;
+  padding: 50%;
+}
+
+.info-block {
+  border-radius: 12px;
+  padding: 1rem;
+}

@@ -47,7 +47,7 @@ export class SidebarDocenteComponent {
           route: '/docente/consulta-calificaciones',
         },
         {
-          label: 'Peso Tipo de Evaluación',
+          label: 'Tipo de Evaluación',
           route: '/docente/peso-tipo-evaluacion',
         }
       ],

@@ -1,28 +1,21 @@
-<div class="pagetitle">
-  <h1>Mis Estudiantes</h1>
-  <nav>
-    <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a routerLink="/dashboard">Home</a></li>
-      <li class="breadcrumb-item active">Mis Estudiantes</li>
-    </ol>
-  </nav>
-</div>
-
 <div class="col-12">
   <div class="card verflow-auto">
+    
     <div class="card-body p-5">
+      <div class="pagetitle">
+        <h1>Mis Estudiantes</h1>
+      </div>
       <!-- Encabezado de la tabla con el selector de registros y campo de búsqueda -->
       <div class="d-flex justify-content-between mb-3">
         <!-- Selector de cantidad de registros -->
         <div class="d-flex align-items-center">
-          <span class="me-2">Mostrando</span>
+          <span class="me-2">Datos</span>
           <select class="form-select" (change)="changeLimit($event)">
             <option value="10">10</option>
             <option value="20">25</option>
             <option value="50">50</option>
             <option value="100">100</option>
           </select>
-          <span class="ms-2 text-nowrap">registros por página</span>
         </div>
 
         <!-- Campo de búsqueda -->
@@ -37,81 +30,67 @@
       </div>
 
       @if (isLoading) {
-      <div class="alert alert-info mb-4 text-center" role="alert">
-        <i class="bi bi-hourglass-split me-2"></i>
-        Espere un momento, se están cargando los datos...
-      </div>
       <app-loading-spinner></app-loading-spinner>
-      } @else if(estudiantes && estudiantes.length > 0) {
-      <div class="row g-4">
-        <div
-          class="col-12 col-sm-6 col-md-4 col-lg-3"
-          *ngFor="
-            let data of estudiantes
-              | paginate : { itemsPerPage: limit, currentPage: page };
-            let i = index
-          "
-        >
-          <div class="card h-100">
-            <div
-              class="card-body profile-card pt-4 d-flex flex-column align-items-center"
-            >
-              <img
-                [src]="data.estudiante.url_imagen || getImageDefault()"
-                class="rounded-circle"
-                alt="Foto de {{ data.estudiante.nombre }}"
-                height="180"
-              />
-              <h5 class="card-title mb-1">
-                {{ data.estudiante.nombre }} {{ data.estudiante.apellido }}
-              </h5>
-              <p class="card-text text-center mb-1">
-                <i class="bi bi-calendar2-week me-2"></i>
-                <strong>Fecha nacimiento:</strong>
-                {{ data.estudiante.fecha_nacimiento | date : "dd/MM/yyyy" }}
-              </p>
-              <p class="card-text mb-1">
-                <i
-                  class="bi"
-                  [ngClass]="{
-                    'bi-gender-male': data.estudiante.genero === 'Masculino',
-                    'bi-gender-female': data.estudiante.genero === 'Femenino',
-                    'bi-gender-ambiguous':
-                      data.estudiante.genero !== 'Masculino' &&
-                      data.estudiante.genero !== 'Femenino'
-                  }"
-                  style="margin-right: 6px"
-                ></i>
-                <strong>Genero:</strong> {{ data.estudiante.genero }}
-              </p>
-              <button
-                (click)="verEstudiante(data.estudiante.id!)"
-                class="btn btn-primary mt-3"
-              >
-                Ver más...
-              </button>
+      }  <!-- Tarjetas creativas -->
+      @else if(estudiantes && estudiantes.length > 0) {
+        <section class="row g-3 px-2">
+          <article
+            class="col-12 col-md-6 col-lg-4"
+            *ngFor="let data of estudiantes | paginate : { itemsPerPage: limit, currentPage: page }; let i = index"
+          >
+            <div class="card student-box p-3 h-100 d-flex flex-column justify-content-center">
+
+              <!-- Encabezado con imagen y nombre -->
+              <div class="d-flex align-items-center gap-3 mb-3">
+                <img
+                  [src]="data.estudiante.url_imagen || getImageDefault()"
+                  alt="Foto de {{ data.estudiante.nombre }}"
+                  class="rounded-circle"
+                  width="60"
+                  height="60"
+                />
+                <div>
+                  <h5 class="mb-0">{{ data.estudiante.nombre }} {{ data.estudiante.apellido }}</h5>
+                  <div class="text-end">
+                    <button
+                      class="learn-more"
+                      (click)="verEstudiante(data.estudiante.id!)"
+                    >
+                      <span class="circle" aria-hidden="true">
+                      <span class="icon arrow"></span>
+                      </span>
+                      <span class="button-text">Ver más...</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <!-- Botón inferior -->
+              
             </div>
-          </div>
+          </article>
+        </section>
+      }
+
+      <!-- No se encontraron -->
+      @else if(estudiantes && estudiantes.length === 0) {
+        <div class="alert alert-warning text-center mt-4" role="alert">
+          <i class="bi bi-exclamation-triangle-fill me-2"></i>
+          No se encontraron estudiantes.
         </div>
-      </div>
-      } @else if(estudiantes && estudiantes.length === 0) {
-      <div class="alert alert-warning text-center" role="alert">
-        <i class="bi bi-exclamation-triangle-fill me-2"></i>
-        No se encontraron estudiantes.
-      </div>
       }
 
       <!-- Paginación -->
       @if (estudiantes.length > limit) {
-      <div class="d-flex justify-content-end mt-3">
-        <pagination-controls
-          class="custom-pagination"
-          (pageChange)="page = $event"
-          previousLabel="Anterior"
-          nextLabel="Siguiente"
-        ></pagination-controls>
-      </div>
+        <div class="d-flex justify-content-end mt-4 px-2">
+          <pagination-controls
+            class="custom-pagination"
+            (pageChange)="page = $event"
+            previousLabel="<"
+            nextLabel=">"
+          ></pagination-controls>
+        </div>
       }
+
     </div>
   </div>
 </div>

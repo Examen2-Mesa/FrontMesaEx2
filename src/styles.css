@@ -190,3 +190,37 @@ table.dataTable th.dt-type-numeric, table.dataTable th.dt-type-date, table.dataT
   border-radius: 50% !important;
 }
 
+.btn-icon {
+  background: transparent;
+  border: none;
+  color: #772b2b;
+  font-size: 1.2rem;
+  padding: 6px;
+  margin: 0 4px;
+  transition: transform 0.2s ease, color 0.2s ease;
+  cursor: pointer;
+}
+
+.btn-icon:hover {
+  color: #0d6efd; /* azul Bootstrap */
+  transform: scale(1.2);
+}
+
+.edit-btn:hover {
+  color: #05a45a; /* verde Bootstrap */
+}
+
+.delete-btn:hover {
+  color: #dc3545; /* rojo Bootstrap */
+}
+.asignar-btn:hover {
+  color: #f0e906; /* amarillo Bootstrap */
+}
+h1 {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  color: #0050d1; /* gris oscuro */
+  margin-bottom: 20px;
+}
+
+
