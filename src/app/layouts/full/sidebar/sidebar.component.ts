@@ -42,6 +42,12 @@ export class SidebarComponent {
       isExpanded: false,
     },
     {
+      label: 'Padres',
+      route: '/admin/padres',
+      icon: 'bi bi-person',
+      isExpanded: false,
+    },
+    {
       label: 'Cursos',
       route: '/admin/cursos',
       icon: 'bi bi-tags',

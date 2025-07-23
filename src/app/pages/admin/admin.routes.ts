@@ -13,6 +13,7 @@ import { UsuariosComponent } from './usuarios/usuarios.component';
 import { TipoEvaluacionesComponent } from './tipo-evaluaciones/tipo-evaluaciones.component';
 import { EvaluacionesComponent } from './evaluaciones/evaluaciones.component';
 import { BoletinComponent } from './boletines/boletines.component';
+import { PadresComponent } from './padres/padres.component';
 
 export const AdminRoutes: Routes = [
   {
@@ -70,5 +71,9 @@ export const AdminRoutes: Routes = [
   {
     path: 'boletines',
     component: BoletinComponent,
+  },
+  {
+    path: 'padres',
+    component: PadresComponent,
   },
 ];

@@ -1,0 +1,265 @@
+<div class="col-12">
+  <div class="card recent-sales overflow-auto">
+    <div class="card-body pt-3">
+      <div class="pagetitle">
+        <h1>Padres</h1>
+      </div>
+
+      <!-- Encabezado con botón nuevo, selector de registros y búsqueda -->
+      <div class="d-flex justify-content-between mb-3">
+        <!-- Botón para agregar nuevo padre -->
+        <div class="d-flex justify-content-start mb-3 mt-4">
+          <button class="btn btn-dark" (click)="abrirModalCrear()">
+            <i class="bi bi-plus-circle"></i>&nbsp;&nbsp; Nuevo Padre
+          </button>
+        </div>
+
+        <!-- Selector de cantidad de registros -->
+        <div class="d-flex align-items-center">
+          <span class="me-2">Datos</span>
+          <select class="form-select" (change)="changeLimit($event)">
+            <option value="10" [selected]="limit === 10">10</option>
+            <option value="25" [selected]="limit === 25">25</option>
+            <option value="50" [selected]="limit === 50">50</option>
+            <option value="100" [selected]="limit === 100">100</option>
+          </select>
+        </div>
+
+        <!-- Campo de búsqueda -->
+        <div class="d-flex align-items-center">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Buscar por nombre, apellido o correo..."
+            (input)="searchTable($event)"
+          />
+        </div>
+      </div>
+
+      <!-- Loading spinner -->
+      <app-loading-spinner *ngIf="isLoading"></app-loading-spinner>
+
+      <!-- Tabla de padres -->
+      <table *ngIf="!isLoading && padres.length > 0" class="table table-hover">
+        <thead>
+          <tr class="text-center">
+            <th scope="col">ID</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Apellido</th>
+            <th scope="col">Teléfono</th>
+            <th scope="col">Correo</th>
+            <th scope="col">Género</th>
+            <th scope="col">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let padre of padres | paginate: { itemsPerPage: limit, currentPage: page }; let i = index" class="text-center">
+            <td>{{ padre.id }}</td>
+            <td>{{ padre.nombre }}</td>
+            <td>{{ padre.apellido }}</td>
+            <td>{{ padre.telefono }}</td>
+            <td>{{ padre.correo }}</td>
+            <td>{{ padre.genero }}</td>
+            <td>
+              <button
+                title="Asignar Hijo"
+                class="btn-icon asignar-btn"
+                (click)="abrirModalAsignarHijo(padre)"
+              >
+                <i class="bi bi-person-plus-fill"></i>
+              </button>
+
+              <button
+                title="Editar Padre"
+                class="btn-icon edit-btn"
+                (click)="abrirModalEditar(padre)"
+              >
+                <i class="bi bi-pencil-square"></i>
+              </button>
+
+              <button
+                title="Eliminar Padre"
+                class="btn-icon delete-btn"
+                (click)="eliminarPadre(padre)"
+              >
+                <i class="bi bi-trash"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Mensaje si no hay registros -->
+      <div *ngIf="!isLoading && padres.length === 0" class="text-center my-4">
+        No se encontraron registros
+      </div>
+
+      <!-- Paginación -->
+      <div *ngIf="padres.length > 0" class="d-flex justify-content-center mt-3">
+        <pagination-controls
+          class="custom-pagination"
+          (pageChange)="page = $event"
+          previousLabel="<"
+          nextLabel=">"
+        ></pagination-controls>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Crear/Editar Padre -->
+  <div class="modal" [ngStyle]="{ display: modalVisible ? 'block' : 'none' }" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <form [formGroup]="padreForm" (ngSubmit)="isEditMode ? actualizarPadre() : guardarPadre()">
+          <div class="modal-header">
+            <h5 class="modal-title">{{ isEditMode ? 'Editar Padre' : 'Crear Nuevo Padre' }}</h5>
+            <button type="button" class="btn-close" aria-label="Close" (click)="cerrarModal()"></button>
+          </div>
+          <div class="modal-body">
+            <!-- Nombre -->
+            <div class="mb-3">
+              <label for="nombre" class="form-label">Nombre</label>
+              <input type="text" id="nombre" formControlName="nombre" class="form-control" />
+              <div *ngIf="isValidField('nombre')" class="invalid-feedback d-block">
+                {{ getMessageError('nombre') }}
+              </div>
+            </div>
+
+            <!-- Apellido -->
+            <div class="mb-3">
+              <label for="apellido" class="form-label">Apellido</label>
+              <input type="text" id="apellido" formControlName="apellido" class="form-control" />
+              <div *ngIf="isValidField('apellido')" class="invalid-feedback d-block">
+                {{ getMessageError('apellido') }}
+              </div>
+            </div>
+
+            <!-- Teléfono -->
+            <div class="mb-3">
+              <label for="telefono" class="form-label">Teléfono</label>
+              <input type="text" id="telefono" formControlName="telefono" class="form-control" />
+              <div *ngIf="isValidField('telefono')" class="invalid-feedback d-block">
+                {{ getMessageError('telefono') }}
+              </div>
+            </div>
+
+            <!-- Correo -->
+            <div class="mb-3">
+              <label for="correo" class="form-label">Correo</label>
+              <input type="email" id="correo" formControlName="correo" class="form-control" />
+              <div *ngIf="isValidField('correo')" class="invalid-feedback d-block">
+                {{ getMessageError('correo') }}
+              </div>
+            </div>
+
+            <!-- Género -->
+            <div class="mb-3">
+              <label for="genero" class="form-label">Género</label>
+              <select id="genero" formControlName="genero" class="form-select">
+                <option value="" disabled>Seleccione género</option>
+                <!-- Opciones con valores completos (por si el backend usa estos) -->
+                <option value="Masculino">Masculino</option>
+                <option value="Femenino">Femenino</option>
+                <option value="Otro">Otro</option>
+                
+              </select>
+              <div *ngIf="isValidField('genero')" class="invalid-feedback d-block">
+                {{ getMessageError('genero') }}
+              </div>
+            </div>
+
+            <!-- Contraseña (solo creación) -->
+            <div *ngIf="!isEditMode" class="mb-3">
+              <label for="contrasena" class="form-label">Contraseña</label>
+              <input type="password" id="contrasena" formControlName="contrasena" class="form-control" />
+              <div *ngIf="isValidField('contrasena')" class="invalid-feedback d-block">
+                {{ getMessageError('contrasena') }}
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="cerrarModal()">Cancelar</button>
+            <button type="submit" class="btn btn-primary">{{ isEditMode ? 'Actualizar' : 'Guardar' }}</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+<!-- Modal Asignar Hijo -->
+<div
+  class="modal fade"
+  *ngIf="asignarHijoModalVisible"
+  [ngClass]="{ 'show d-block': asignarHijoModalVisible }"
+  tabindex="-1"
+  role="dialog"
+  style="background: rgba(0,0,0,0.5);"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Asignar Hijos a {{ padreSeleccionado?.nombre }}</h5>
+        <button type="button" class="btn-close" aria-label="Close" (click)="cerrarModalAsignarHijo()"></button>
+      </div>
+      
+      <div class="modal-body">
+        <!-- Selector de estudiante -->
+        <div class="mb-4" [formGroup]="padreForm">
+          <label for="estudiante_id" class="form-label fw-semibold">
+            Seleccionar Estudiante:
+          </label>
+          <ng-select
+            [items]="estudiantes"
+            bindLabel="nombreCompleto"
+            bindValue="id"
+            [clearable]="true"
+            [searchable]="true"
+            placeholder="Seleccione un estudiante"
+            notFoundText="No se encontraron resultados"
+            formControlName="estudiante_id"
+            class="w-100"
+          >
+          </ng-select>
+          
+          <div *ngIf="isValidField('estudiante_id')" class="text-danger mt-1">
+            {{ getMessageError("estudiante_id") }}
+          </div>
+          
+          <button class="btn btn-primary mt-2" (click)="asignarHijo()">
+            Asignar Hijo
+          </button>
+        </div>
+
+        <!-- Lista de hijos asignados -->
+        <div class="mt-4">
+          <h6>Hijos asignados:</h6>
+          <div *ngIf="hijosAsignados.length > 0; else noHijos">
+            <ul class="list-group">
+              <li *ngFor="let hijo of hijosAsignados" class="list-group-item d-flex justify-content-between align-items-center">
+                {{ hijo.nombre }} {{ hijo.apellido }}
+                <button 
+                  class="btn btn-sm btn-danger" 
+                  (click)="eliminarHijo(hijo.id)"
+                  title="Eliminar asignación"
+                >
+                  <i class="bi bi-trash"></i>
+                </button>
+              </li>
+            </ul>
+          </div>
+          
+          <ng-template #noHijos>
+            <p class="text-muted">No tiene hijos asignados.</p>
+          </ng-template>
+        </div>
+      </div>
+      
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="cerrarModalAsignarHijo()">
+          Cerrar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
