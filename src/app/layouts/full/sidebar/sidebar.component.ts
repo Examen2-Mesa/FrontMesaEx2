@@ -79,6 +79,10 @@ export class SidebarComponent {
         label: 'Tipo de evaluación',
         route: '/admin/tipo-evaluacion',
       },
+      {
+        label: 'Boletines',
+        route: '/admin/boletines',
+      },
       ],
     },
     {

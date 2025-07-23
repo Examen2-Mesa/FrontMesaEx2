@@ -12,6 +12,7 @@ import { DocenteMateriaComponent } from './docente-materia/docente-materia.compo
 import { UsuariosComponent } from './usuarios/usuarios.component';
 import { TipoEvaluacionesComponent } from './tipo-evaluaciones/tipo-evaluaciones.component';
 import { EvaluacionesComponent } from './evaluaciones/evaluaciones.component';
+import { BoletinComponent } from './boletines/boletines.component';
 
 export const AdminRoutes: Routes = [
   {
@@ -65,5 +66,9 @@ export const AdminRoutes: Routes = [
   {
     path: 'calificaciones',
     component: EvaluacionesComponent,
+  },
+  {
+    path: 'boletines',
+    component: BoletinComponent,
   },
 ];
